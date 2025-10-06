@@ -1,3 +1,11 @@
+# Flask Course 2025
+
+![Local application run](screenshots/local-run.png)
+*Local application run*
+
+![Live on render.com](screenshots/render-live.png)
+*Live on render.com*
+
 ## `.gitignore` and `.flaskenv`
 
 These files help manage your Flask project's environment and version control.
@@ -20,7 +28,7 @@ This file sets environment variables for Flask. Example contents:
 
 You can use the `python-dotenv` package to automatically load variables from `.flaskenv` when starting your Flask app. Install it with:
 
-```
+```python
 pip install python-dotenv
 ```
 
@@ -45,9 +53,11 @@ The `app.py` file contains the main code for your Flask application. Typically, 
 ## Running the Server
 
 You can start your Flask server in two common ways:
+
 - Using environment variables in your terminal:
 
     On Linux/Mac:
+
     ```bash
     export FLASK_APP=app.py
     flask run
@@ -61,21 +71,28 @@ You can start your Flask server in two common ways:
     set FLASK_APP=app.py
     flask run
     ```
+
     ```bat
     set FLASK_APP=app.py
     flask run
     ```
+
 - Using the Flask CLI:
-    ```
+
+    ```python
     flask run
     ```
+
     This command runs the app using the settings in `.flaskenv`.
 
 - Directly with Python:
-    ```
+
+    ```python
     python app.py
     ```
+
     This runs the `app.py` file directly. Make sure it includes the following block:
+
     ```python
     if __name__ == "__main__":
             app.run()
@@ -85,24 +102,24 @@ You can start your Flask server in two common ways:
 
 To view installed Python packages, run:
 
-```
+```python
 pip list
 ```
 
 To install a specific package, use:
 
-```
+```python
 pip install package_name
 ```
 
 To save your project's dependencies, run:
 
-```
+```python
 pip freeze > requirements.txt
 ```
 
 To install dependencies from `requirements.txt`, use:
 
-```
+```python
 pip install -r requirements.txt
 ```
