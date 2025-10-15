@@ -1,60 +1,143 @@
 {% extends "base.html" %} {% block content %}
-<div class="d-flex align-items-center mb-4">
-  <img
-    src="{{ url_for('static', filename='images/funny-dog.jpeg') }}"
-    alt="Аватар"
-    class="rounded-circle me-3"
-    width="120"
-    height="120"
-  />
-  <div>
-    <h5 class="mb-0">Volodymyr Fufalko</h5>
-    <small class="text-muted">@finkord</small>
-  </div>
+<div class="container my-5 text-white">
+  <!-- Секція "Про мене" -->
+  <section id="about">
+    <h2 class="section-title">Про мене</h2>
+    <div class="timeline-item">
+      <div class="logo-placeholder profile-photo">
+        <img
+          src="{{ url_for('static', filename='images/funny-dog.jpeg') }}"
+          class="img-fluid rounded-circle"
+          alt="Фото профілю"
+        />
+      </div>
+      <div class="timeline-content">
+        <h3>Володимир Фуфалько</h3>
+        <h5 class="text-muted mb-3">DevOps Engineer</h5>
+        <p>
+          Інженер DevOps із 6-місячним практичним досвідом у проєктуванні,
+          впровадженні та підтримці інфраструктури для вебдодатків. Досвідчений
+          у контейнеризації (Docker), управлінні конфігурацією (Ansible) та
+          розгортанні інфраструктури як коду (Terraform, AWS).
+        </p>
+        <p>
+          Маю досвід автоматизації CI/CD за допомогою Jenkins та впровадження
+          практик спостереження (OpenTelemetry, Splunk). Зацікавлений у
+          створенні сучасних, надійних та безпечних DevOps-екосистем.
+        </p>
+        <a href="{{ url_for('contacts') }}" class="btn btn-primary mt-3"
+          >Зв'язатися зі мною</a
+        >
+      </div>
+    </div>
+  </section>
+
+  <!-- Секція "Досвід роботи" -->
+  <section id="experience">
+    <h2 class="section-title">Досвід роботи</h2>
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <h5>Інтернатура DevOps</h5>
+        <h6>SoftServe IT Academy | Травень 2025 - Серпень 2025</h6>
+        <ul>
+          <li>
+            Проєктування та розгортання інфраструктури на AWS (VPC, IAM, ECS,
+            RDS).
+          </li>
+          <li>
+            Автоматизація процесів CI/CD за допомогою Jenkins та GitHub Actions.
+          </li>
+          <li>
+            Контейнеризація додатків з використанням Docker та Docker Compose.
+          </li>
+          <li>Управління конфігураціями серверів за допомогою Ansible.</li>
+          <li>Впровадження моніторингу та збору логів (Prometheus, Splunk).</li>
+        </ul>
+      </div>
+      <div class="logo-placeholder">
+        <!-- <span>Лого</span> -->
+        <img
+          src="{{ url_for('static', filename='images/softserve_academy_logo-2023.png') }}"
+          class="img-fluid rounded-circle"
+          alt="softserve"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Секція "Навички" -->
+  <section id="skills">
+    <h2 class="section-title">Інструменти та Технології</h2>
+    <div class="text-center">
+      <span class="skill-badge">AWS (ECR, ECS, VPC, IAM, ALB, RDS)</span>
+      <span class="skill-badge">Terraform</span>
+      <span class="skill-badge">Ansible</span>
+      <span class="skill-badge">Docker</span>
+      <span class="skill-badge">Docker Compose</span>
+      <span class="skill-badge">Jenkins</span>
+      <span class="skill-badge">GitHub Actions</span>
+      <span class="skill-badge">Python</span>
+      <span class="skill-badge">Bash</span>
+      <span class="skill-badge">Nginx</span>
+      <span class="skill-badge">PostgreSQL</span>
+      <span class="skill-badge">MySQL</span>
+      <span class="skill-badge">Prometheus</span>
+      <span class="skill-badge">Splunk</span>
+      <span class="skill-badge">OpenTelemetry</span>
+      <span class="skill-badge">SonarQube</span>
+      <span class="skill-badge">Snyk</span>
+      <span class="skill-badge">OWASP ZAP</span>
+      <span class="skill-badge">Vagrant</span>
+      <span class="skill-badge">VirtualBox</span>
+      <span class="skill-badge">Ubuntu/Alpine Linux</span>
+      <span class="skill-badge">YAML</span>
+      <span class="skill-badge">Flask</span>
+      <span class="skill-badge">Jira</span>
+    </div>
+  </section>
+
+  <!-- Секція "Освіта" -->
+  <section id="education">
+    <h2 class="section-title">Освіта</h2>
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <h5>Прикарпатський національний університет імені Василя Стефаника</h5>
+        <h6>Інженерія програмного забезпечення | 2023 - 2027</h6>
+        <p class="text-muted">Факультет математики та інформатики</p>
+      </div>
+      <div class="logo-placeholder">
+        <!-- <span>Лого</span> -->
+        <img
+          src="{{ url_for('static', filename='images/CNU_logo_150x150.png') }}"
+          class="img-fluid rounded-circle"
+          alt="CNU"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Секція "Сертифікації та Мови" -->
+  <section id="certifications">
+    <h2 class="section-title">Сертифікації та Мови</h2>
+    <div class="timeline-item mb-5">
+      <div class="timeline-content">
+        <h5>Сертифікації</h5>
+        <ul class="mb-0">
+          <li>
+            FLEXIBLE METHODOLOGIES OF DEVELOPING AUTOMATED CONFIGURATION
+            MANAGEMENT SYSTEMS (2025)
+          </li>
+          <li>DevOps Mastery: Grant-Powered by SoftServe (2025)</li>
+          <li>PHP From Scratch | Beginner To Advanced (2025)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <h5>Мови</h5>
+        <p class="mb-0">Англійська: Intermediate (B1)</p>
+      </div>
+    </div>
+  </section>
 </div>
-
-<h1 class="display-4 fw-bold">DevOps Engineer</h1>
-
-<section id="about" class="my-5">
-  <p>
-    DevOps інженер з практичним досвідом у проєктуванні, впровадженні та
-    підтримці інфраструктури для веб-додатків. Володію контейнеризацією
-    (Docker), оркестрацією (Docker Compose), керуванням конфігураціями (Ansible)
-    та автоматизацією CI/CD (Jenkins).
-  </p>
-</section>
-
-<section id="experience">
-  <h2 class="display-1 text-muted">01</h2>
-  <h3>Featured work</h3>
-
-  <div class="mt-4">
-    <p class="text-muted">DevOps Internship Project</p>
-    <h4>Self-Hosted Git Service - Gogs</h4>
-    <p>
-      Розгортання та підтримка self-hosted Git-сервісу, аналогічного GitHub, для
-      командної розробки. Проєкт включав контейнеризацію системи, автоматизацію
-      інфраструктури та розгортання, а також забезпечення повного моніторингу за
-      допомогою метрик, логів та трейсів.
-    </p>
-  </div>
-</section>
-
-<section id="technologies" class="mt-5">
-  <h3>Tools & Technologies</h3>
-  <p>
-    <span class="badge bg-primary">AWS</span>
-    <span class="badge bg-primary">Docker</span>
-    <span class="badge bg-primary">Jenkins</span>
-    <span class="badge bg-secondary">Terraform</span>
-    <span class="badge bg-secondary">Ansible</span>
-    <span class="badge bg-secondary">Kubernetes</span>
-    <span class="badge bg-info text-dark">Python</span>
-    <span class="badge bg-info text-dark">Bash</span>
-    <span class="badge bg-success">Splunk</span>
-    <span class="badge bg-success">OpenTelemetry</span>
-    <span class="badge bg-dark">Nginx</span>
-    <span class="badge bg-dark">PostgreSQL</span>
-  </p>
-</section>
 {% endblock %}

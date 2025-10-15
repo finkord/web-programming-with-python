@@ -1,59 +1,96 @@
 {% extends "base.html" %} {% block content %}
-<h2>Контактна інформація</h2>
-<p>Ви можете зв'язатися зі мною будь-яким зручним для вас способом:</p>
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card p-4 p-md-5 shadow">
+      <div class="card-body">
+        <h1 class="text-center mb-4">Зв'яжіться зі мною</h1>
+        <p class="text-center text-muted mb-5">
+          Ви можете знайти мене в соціальних мережах або надіслати повідомлення
+          через форму нижче.
+        </p>
 
-<ul class="list-group list-group-flush">
-  <li class="list-group-item">
-    <strong>Email:</strong>
-    <a href="mailto:devfinkord@gmail.com">devfinkord@gmail.com</a>
-  </li>
-  <li class="list-group-item">
-    <strong>Telegram:</strong>
-    <a href="https://t.me/Finkord" target="_blank">t.me/Finkord</a>
-  </li>
-  <li class="list-group-item">
-    <strong>LinkedIn:</strong>
-    <a
-      href="https://linkedin.com/in/volodymyr-fufalko-5a12432b5"
-      target="_blank"
-      >https://www.linkedin.com/in/volodymyr-fufalko-5a12432b5</a
-    >
-  </li>
-  <li class="list-group-item">
-    <strong>GitHub:</strong>
-    <a href="https://github.com/finkord" target="_blank">github.com/finkord</a>
-  </li>
-</ul>
+        <!-- Соціальні мережі -->
+        <div class="text-center mb-5 contact-links">
+          <a href="https://t.me/Finkord" target="_blank" title="Telegram"
+            ><i class="bi bi-telegram"></i
+          ></a>
+          <a
+            href="https://linkedin.com/in/volodymyr-fufalko-5a12432b5"
+            target="_blank"
+            title="LinkedIn"
+            ><i class="bi bi-linkedin"></i
+          ></a>
+        </div>
 
-<h3 class="mt-5">Форма для зв'язку</h3>
-<form>
-  <div class="mb-3">
-    <label for="name" class="form-label">Ваше ім'я</label>
-    <input
-      type="text"
-      class="form-control"
-      id="name"
-      placeholder="Введіть ім'я"
-    />
+        <div id="alert-placeholder"></div>
+
+        <!-- Форма-заглушка -->
+        <form id="contactForm">
+          <div class="mb-3">
+            <label for="name" class="form-label">Ваше ім'я</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Ім'я"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Ваш Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="name@example.com"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label for="message" class="form-label">Повідомлення</label>
+            <textarea
+              class="form-control"
+              id="message"
+              rows="5"
+              placeholder="Напишіть ваше повідомлення тут..."
+              required
+            ></textarea>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg">
+              Надіслати повідомлення
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-  <div class="mb-3">
-    <label for="email" class="form-label">Email</label>
-    <input
-      type="email"
-      class="form-control"
-      id="email"
-      placeholder="name@example.com"
-    />
-  </div>
-  <div class="mb-3">
-    <label for="message" class="form-label">Повідомлення</label>
-    <textarea
-      class="form-control"
-      id="message"
-      rows="3"
-      placeholder="Ваше повідомлення..."
-    ></textarea>
-  </div>
-  <button type="submit" class="btn btn-primary">Надіслати</button>
-</form>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  // Обробка відправки форми
+  const contactForm = document.getElementById("contactForm");
+  const alertPlaceholder = document.getElementById("alert-placeholder");
+
+  contactForm.addEventListener("submit", function (event) {
+    // Запобігаємо стандартній відправці форми
+    event.preventDefault();
+
+    // Створюємо сповіщення про успішну "відправку"
+    const alertDiv = document.createElement("div");
+    alertDiv.className = "alert alert-success alert-dismissible fade show";
+    alertDiv.role = "alert";
+    alertDiv.innerHTML = `
+            <strong>Дякую!</strong> Ваше повідомлення було успішно "надіслано".
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+
+    // Додаємо сповіщення на сторінку
+    alertPlaceholder.innerHTML = ""; // Очищуємо попередні сповіщення
+    alertPlaceholder.append(alertDiv);
+
+    // Очищуємо поля форми
+    contactForm.reset();
+  });
+</script>
 {% endblock %}

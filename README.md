@@ -1,10 +1,10 @@
 # Flask Course 2025
 
-![Local application run](screenshots/local-run.png)
+![Local application run](screenshots/fullscreen.png)
 *Local application run*
 
-![Live on render.com](screenshots/render-live.png)
-*Live on render.com*
+<!-- ![Live on render.com](screenshots/render-live.png)
+*Live on render.com* -->
 
 ## `.gitignore` and `.flaskenv`
 
