@@ -1,0 +1,59 @@
+{% extends "base.html" %} {% block content %}
+<h2>Контактна інформація</h2>
+<p>Ви можете зв'язатися зі мною будь-яким зручним для вас способом:</p>
+
+<ul class="list-group list-group-flush">
+  <li class="list-group-item">
+    <strong>Email:</strong>
+    <a href="mailto:devfinkord@gmail.com">devfinkord@gmail.com</a>
+  </li>
+  <li class="list-group-item">
+    <strong>Telegram:</strong>
+    <a href="https://t.me/Finkord" target="_blank">t.me/Finkord</a>
+  </li>
+  <li class="list-group-item">
+    <strong>LinkedIn:</strong>
+    <a
+      href="https://linkedin.com/in/volodymyr-fufalko-5a12432b5"
+      target="_blank"
+      >https://www.linkedin.com/in/volodymyr-fufalko-5a12432b5</a
+    >
+  </li>
+  <li class="list-group-item">
+    <strong>GitHub:</strong>
+    <a href="https://github.com/finkord" target="_blank">github.com/finkord</a>
+  </li>
+</ul>
+
+<h3 class="mt-5">Форма для зв'язку</h3>
+<form>
+  <div class="mb-3">
+    <label for="name" class="form-label">Ваше ім'я</label>
+    <input
+      type="text"
+      class="form-control"
+      id="name"
+      placeholder="Введіть ім'я"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input
+      type="email"
+      class="form-control"
+      id="email"
+      placeholder="name@example.com"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="message" class="form-label">Повідомлення</label>
+    <textarea
+      class="form-control"
+      id="message"
+      rows="3"
+      placeholder="Ваше повідомлення..."
+    ></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Надіслати</button>
+</form>
+{% endblock %}

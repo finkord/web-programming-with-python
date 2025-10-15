@@ -1,0 +1,14 @@
+body {
+  font-family: "Arial", sans-serif;
+}
+
+section h2 {
+  color: #343a40; /* Темно-сірий колір для заголовків секцій */
+  border-bottom: 2px solid #0d6efd; /* Синя лінія під заголовком */
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+
+.img-fluid {
+  border: 3px solid #dee2e6; /* Світло-сіра рамка навколо фото */
+}

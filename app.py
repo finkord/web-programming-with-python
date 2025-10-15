@@ -10,6 +10,5 @@ def resume():
 def contacts():
     return render_template('contacts.html', title="Contacts")
 
-@app.route('/base')
-def base():
-    return render_template('resume.html', title="base_template")
+if __name__ == '__main__':
+    app.run(debug=True)
