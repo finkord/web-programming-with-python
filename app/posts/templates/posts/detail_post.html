@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% block title %} POST № {{post["id"]}} |
+{{post["title"]}} {% endblock %} {% block content %}
+
+<div class="container mt-5">
+  <div class="card shadow-lg mb-4">
+    <div class="card-header bg-secondary text-white">
+      <h1 class="h3 mb-0">
+        <span class="badge bg-dark text-light me-1">{{post["id"]}}</span>
+        {{post["title"]}}
+      </h1>
+    </div>
+
+    <div class="card-body">
+      <p class="card-text lead">{{ post.get('content') }}</p>
+    </div>
+
+    <!-- <div class="card-footer text-muted d-flex justify-content-end">
+      <small>Дата публікації: 2024-01-01 (Приклад)</small>
+    </div> -->
+  </div>
+
+  <a href="{{ url_for('posts.get_posts') }}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left"></i> Повернутися до всіх постів
+  </a>
+</div>
+
+{% endblock %}
