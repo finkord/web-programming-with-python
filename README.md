@@ -1,5 +1,17 @@
 #
 
+![Local application run](screenshots/unittest_results.png)
+*Unittest Results*
+
+![Local application run](screenshots/admin_page.png)
+*Admin Page*
+
+![Local application run](screenshots/posts_page.png)
+*Article Page*
+
+![Local application run](screenshots/detail_post_page.png)
+*Detail Post Page*
+
 ## Code Explanations
 
 This project is a Flask web application with the following structure:
