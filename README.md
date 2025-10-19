@@ -1,128 +1,42 @@
-# Flask Course 2025
+#
 
-![Local application run](screenshots/fullscreen.png)
-*Local application run*
+## Code Explanations
 
-![Local application run](screenshots/monile_exp.png)
-*Test smartphone experience*
+This project is a Flask web application with the following structure:
 
-<!-- ![Live on render.com](screenshots/render-live.png)
-*Live on render.com* -->
+- `run.py`: Entry point. Runs the Flask app.
+- `app/`: Main application package.
+  - `__init__.py`: Initializes the Flask app and loads configuration.
+  - `views.py`: Contains route/view definitions for the main app.
+  - `posts/`: Blueprint for post-related functionality.
+    - `__init__.py`: Initializes the posts blueprint.
+    - `views.py`: Contains routes/views for posts.
+    - `templates/posts/`: HTML templates for post pages (`detail_post.html`, `posts.html`).
+  - `templates/`: Main HTML templates (`base.html`, `hi.html`, `home.html`).
+- `config.py`: Configuration settings for Flask (e.g., secret key, debug mode).
+- `requirements.txt`: List of required Python packages.
+- `tests/`: Contains unit tests (e.g., `test_user_bp.py`). Uses Python's `unittest` framework. Sets up a test client for the Flask app.
 
-## `.gitignore` and `.flaskenv`
+## url_for in Flask
 
-These files help manage your Flask project's environment and version control.
+The `url_for` function in Flask is used to build URLs for routes dynamically. Instead of hardcoding URLs, you can use `url_for('function_name', **params)` to generate the correct URL for a given view function. This helps avoid errors and makes your code more maintainable. For example, in your `/admin` route, `url_for("greetings", name="administrator", _external=True)` generates the full URL for the `greetings` route with the specified parameters.
 
-## `.gitignore`
+## Serving Static Files with url_for
 
-This file tells Git which files or directories to ignore. Example contents:
+In Flask, you should use `url_for('static', filename='path/to/file')` to generate URLs for static files (like CSS, JS, images) in your templates. This ensures the correct path is used regardless of your app's configuration. Example usage in a template:
 
-```gitignore
-__pycache__/
-*.pyc
-.env
-instance/
-*.db
+```html
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 ```
 
-## `.flaskenv`
+## {{ }} in Flask Templates
 
-This file sets environment variables for Flask. Example contents:
+In Flask templates, `{{ name }}` is a Jinja2 expression that displays the value of the `name` variable passed from your view function to the template. When the template is rendered, Flask injects the value of `name` so it appears in the HTML where `{{ name }}` is written.
 
-You can use the `python-dotenv` package to automatically load variables from `.flaskenv` when starting your Flask app. Install it with:
+## How it works
 
-```python
-pip install python-dotenv
-```
-
-```env
-FLASK_APP=app.py
-```
-
-## Usage
-
-- Place `.gitignore` in your project root to avoid committing unwanted files.
-- Use `.flaskenv` to configure Flask settings automatically when running the app.
-
-## Next Steps
-
-- Customize `.gitignore` for your needs.
-- Add more environment variables to `.flaskenv` as your app grows.
-
-## Understanding `app.py`
-
-The `app.py` file contains the main code for your Flask application. Typically, it creates a Flask app instance, defines routes, and handles requests.
-
-## Running the Server
-
-You can start your Flask server in two common ways:
-
-- Using environment variables in your terminal:
-
-    On Linux/Mac:
-
-    ```bash
-    export FLASK_APP=app.py
-    flask run
-    ```
-
-    On Windows (PowerShell):
-
-    ```powershell
-    Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
-    .venv/Scripts/Activate.ps1
-    set FLASK_APP=app.py
-    flask run
-    ```
-
-    ```bat
-    set FLASK_APP=app.py
-    flask run
-    ```
-
-- Using the Flask CLI:
-
-    ```python
-    flask run
-    ```
-
-    This command runs the app using the settings in `.flaskenv`.
-
-- Directly with Python:
-
-    ```python
-    python app.py
-    ```
-
-    This runs the `app.py` file directly. Make sure it includes the following block:
-
-    ```python
-    if __name__ == "__main__":
-            app.run()
-    ```
-
-## Managing Dependencies
-
-To view installed Python packages, run:
-
-```python
-pip list
-```
-
-To install a specific package, use:
-
-```python
-pip install package_name
-```
-
-To save your project's dependencies, run:
-
-```python
-pip freeze > requirements.txt
-```
-
-To install dependencies from `requirements.txt`, use:
-
-```python
-pip install -r requirements.txt
-```
+1. The app is started via `run.py`, which imports and runs the Flask app from `app`.
+2. Routes are defined in `views.py` and `posts/views.py`, handling different URLs and logic.
+3. HTML templates render responses for users.
+4. Configuration is loaded from `config.py`.
+5. Tests are located in the `tests/` folder.
