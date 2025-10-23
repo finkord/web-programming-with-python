@@ -17,6 +17,64 @@ main {
   backdrop-filter: blur(10px);
 }
 
+/* Container for all flashed messages */
+.flashes {
+  list-style: none;
+  padding: 10px 20px;
+  margin: 15px 0;
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: sans-serif;
+
+  /* Dark Theme Base Styling */
+  color: #f1f1f1; /* Light text color */
+  background-color: #333333; /* Darker background for the container */
+  border: 1px solid #555555; /* Slightly lighter border */
+}
+
+/* Style specifically for error messages */
+.error {
+  /* High-contrast Red for errors */
+  color: #ffeaea; /* Very light red/white text */
+  background-color: #721c24; /* Deep red background */
+  border-color: #a52a2a; /* Muted red border */
+
+  /* Ensure .error (if used directly on an <li>) is styled correctly */
+  padding: 10px 20px;
+  margin: 15px 0;
+  list-style: none;
+  border-radius: 4px;
+}
+
+/* Optional: Additional message types for a complete system */
+
+.success {
+  /* Green for success */
+  color: #e6ffed;
+  background-color: #285e3f;
+  border-color: #4caf50;
+}
+
+.info {
+  /* Blue for general information */
+  color: #e0f0ff;
+  background-color: #1a4d7d;
+  border-color: #2196f3;
+}
+
+.warning {
+  /* Yellow/Orange for warnings */
+  color: #fff9e6;
+  background-color: #7d661e;
+  border-color: #ffc107;
+}
+
+/* Optional: Style for individual list items */
+.flashes li {
+  /* This ensures individual messages have correct spacing */
+  padding: 5px 0;
+}
+
 .navbar {
   padding-top: 2rem; /* збільшує висоту зверху */
   padding-bottom: 2rem; /* збільшує висоту знизу */

@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, redirect, request, render_template
+from flask import Blueprint, url_for, redirect, request, render_template, flash
 
 # Defining a blueprint
 users_bp = Blueprint(
@@ -19,6 +19,18 @@ def admin():
     print(to_url)
     return redirect(to_url)
 
+@users_bp.route("/login", methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != 'admin' or \
+                request.form['password'] != 'secret':
+            error = 'Invalid credentials'
+        else:
+            flash('You were successfully logged in')
+            return redirect(url_for('users_bp.profile'))
+    return render_template("users/login.html",title="Login Page", error=error)
 
-
-
+@users_bp.route("/profile")
+def profile():
+    return render_template("users/profile.html",title="Profile Page")
