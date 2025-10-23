@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, redirect, request, render_template, flash
+from flask import Blueprint, url_for, redirect, request, render_template, flash, session
 
 # Defining a blueprint
 users_bp = Blueprint(
@@ -27,10 +27,23 @@ def login():
                 request.form['password'] != 'secret':
             error = 'Invalid credentials'
         else:
-            flash('You were successfully logged in')
+            session['username'] = request.form['username']
+            flash('You were successfully logged in','success')
             return redirect(url_for('users_bp.profile'))
     return render_template("users/login.html",title="Login Page", error=error)
 
 @users_bp.route("/profile")
 def profile():
-    return render_template("users/profile.html",title="Profile Page")
+    username = session.get('username')
+    if not username:
+        flash('Please log in to view this page.', 'warning')
+        return redirect(url_for('users_bp.login'))
+    return render_template("users/profile.html",title="Profile Page", username=username)
+
+@users_bp.route("/logout")
+def logout():
+    session.pop('username', None) 
+    # session.clear()
+    
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('users_bp.login'))
