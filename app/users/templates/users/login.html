@@ -1,25 +1,46 @@
 {% extends "base.html" %} {% block content %}
-<h1 style="margin-top: 10px">Login</h1>
-<!-- {% if error %}
-<p class="error"><strong>Error:</strong> {{ error }} {% endif %}</p> -->
+<div class="row mt-5">
+  <div class="col-md-6 offset-md-3">
+    <h1 class="text-center mb-4">Login</h1>
 
-<form method="post">
-  <dl>
-    <dt>Username:</dt>
-    <dd>
-      <input
-        type="text"
-        name="username"
-        value="{{
-          request.form.username }}"
-      />
-    </dd>
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+      <strong>Error:</strong> {{ error }}
+    </div>
+    {% endif %}
 
-    <dt>Password:</dt>
-    <dd><input type="password" name="password" /></dd>
-  </dl>
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <form method="post">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              name="username"
+              value="{{ request.form.username or '' }}"
+              required
+            />
+          </div>
 
-  <p><input type="submit" value="Login" /></p>
-</form>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password:</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              required
+            />
+          </div>
 
+          <div class="d-grid">
+            <button type="submit" class="btn btn-info text-white">Login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
