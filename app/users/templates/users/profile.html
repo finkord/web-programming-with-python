@@ -1,6 +1,23 @@
-{% extends "base.html" %} {% block content %}
-<h1 style="margin-top: 10px">Welcome, {{ username }}!</h1>
+{% extends "base.html" %} {% block content %} {% set current_theme =
+request.cookies.get('theme', 'dark') %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 style="margin: 0">Welcome, {{ username }}!</h1>
 
+  <div class="btn-group" role="group" aria-label="Theme switcher">
+    <a
+      href="{{ url_for('users_bp.set_theme', theme_name='light') }}"
+      class="btn btn-outline-primary {% if current_theme == 'light' %}active{% endif %}"
+    >
+      <i class="bi bi-sun-fill"></i> Світла
+    </a>
+    <a
+      href="{{ url_for('users_bp.set_theme', theme_name='dark') }}"
+      class="btn btn-outline-primary {% if current_theme == 'dark' %}active{% endif %}"
+    >
+      <i class="bi bi-moon-stars-fill"></i> Темна
+    </a>
+  </div>
+</div>
 <p>This is your profile page.</p>
 
 <p>

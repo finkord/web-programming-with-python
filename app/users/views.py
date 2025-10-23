@@ -94,3 +94,23 @@ def logout():
 
     flash("You have been logged out.", "info")
     return redirect(url_for("users_bp.login"))
+
+@users_bp.route("/set-theme/<theme_name>")
+def set_theme(theme_name):
+    """
+    Встановлює кольорову схему, зберігаючи її в кукі.
+    """
+    if theme_name not in ("light", "dark"):
+        theme_name = "dark"  # За замовчуванням
+
+    redirect_to = request.referrer or url_for("users_bp.profile")
+
+    # 3. Створюємо об'єкт відповіді (response), щоб встановити кукі
+    resp = make_response(redirect(redirect_to))
+
+    # 4. Встановлюємо кукі 'theme' на 1 рік
+    max_age_seconds = 365 * 24 * 60 * 60  # (днів * годин * хвилин * секунд)
+    resp.set_cookie("theme", theme_name, max_age=max_age_seconds)
+
+    flash(f"Тему змінено на {theme_name}.", "info")
+    return resp    
