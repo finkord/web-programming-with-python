@@ -1,16 +1,28 @@
 #
 
-![Local application run](screenshots/unittest_results.png)
-*Unittest Results*
+![Local application run](screenshots/invalid_creds.png)
+*Invalid credentials*
 
-![Local application run](screenshots/admin_page.png)
-*Admin Page*
+![Local application run](screenshots/succesful_login.png)
+*Successful login*
 
-![Local application run](screenshots/posts_page.png)
-*Article Page*
+![Local application run](screenshots/theme_switch.png)
+*Switching the site theme*
 
-![Local application run](screenshots/detail_post_page.png)
-*Detail Post Page*
+![Local application run](screenshots/add_cookie.png)
+*Adding a test cookie*
+
+![Local application run](screenshots/delete_cookie_by_a_key.png)
+*Deleting a cookie by key*
+
+![Local application run](screenshots/log_out.png)
+*Logging out*
+
+![Local application run](screenshots/warning_flash.png)
+*Warning notification: login required to access the page*
+
+![Local application run](screenshots/mobile-view.png)
+*Mobile view of the site*
 
 ## Code Explanations
 
