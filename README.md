@@ -10,7 +10,7 @@
 *Лог файл*
 
 ![Local application run](screenshots/empty_fields.png)
-*пусті поля в формі логіну*
+*Пусті поля в формі логіну*
 
 ![Local application run](screenshots/short_password.png)
 *Короткий пароль*
