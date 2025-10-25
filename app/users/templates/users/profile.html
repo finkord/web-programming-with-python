@@ -1,19 +1,15 @@
 {% extends "base.html" %} {% block content %} {% set current_theme =
 request.cookies.get('theme', 'dark') %}
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3 py-2">
   <h1 style="margin: 0">Welcome, {{ username }}!</h1>
 
   <div class="btn-group" role="group" aria-label="Theme switcher">
-    <a
-      href="{{ url_for('users_bp.set_theme', theme_name='light') }}"
-      class="btn btn-outline-primary {% if current_theme == 'light' %}active{% endif %}"
-    >
+    <a href="{{ url_for('users_bp.set_theme', theme_name='light') }}"
+      class="btn btn-outline-primary {% if current_theme == 'light' %}active{% endif %}">
       <i class="bi bi-sun-fill"></i> Світла
     </a>
-    <a
-      href="{{ url_for('users_bp.set_theme', theme_name='dark') }}"
-      class="btn btn-outline-primary {% if current_theme == 'dark' %}active{% endif %}"
-    >
+    <a href="{{ url_for('users_bp.set_theme', theme_name='dark') }}"
+      class="btn btn-outline-primary {% if current_theme == 'dark' %}active{% endif %}">
       <i class="bi bi-moon-stars-fill"></i> Темна
     </a>
   </div>
@@ -29,94 +25,42 @@ request.cookies.get('theme', 'dark') %}
 <div class="row mt-4">
   <div class="col-md-6">
     <h2>Додати кукі</h2>
-    <form
-      method="POST"
-      action="{{ url_for('users_bp.profile') }}"
-      class="border p-3 rounded"
-    >
+    <form method="POST" action="{{ url_for('users_bp.profile') }}" class="border p-3 rounded">
       <div class="mb-3">
         <label for="cookie_key" class="form-label">Ключ кукі</label>
-        <input
-          type="text"
-          name="cookie_key"
-          id="cookie_key"
-          class="form-control"
-          required
-        />
+        <input type="text" name="cookie_key" id="cookie_key" class="form-control" required />
       </div>
 
       <div class="mb-3">
         <label for="cookie_value" class="form-label">Значення кукі</label>
-        <input
-          type="text"
-          name="cookie_value"
-          id="cookie_value"
-          class="form-control"
-          required
-        />
+        <input type="text" name="cookie_value" id="cookie_value" class="form-control" required />
       </div>
 
       <div class="mb-3">
         <label for="cookie_expiry" class="form-label">Термін дії (сек)</label>
-        <input
-          type="number"
-          name="cookie_expiry"
-          id="cookie_expiry"
-          class="form-control"
-          placeholder="Напр. 60 (залиште пустим для сесії)"
-        />
+        <input type="number" name="cookie_expiry" id="cookie_expiry" class="form-control"
+          placeholder="Напр. 60 (залиште пустим для сесії)" />
       </div>
 
-      <button
-        type="submit"
-        class="btn btn-success"
-        name="action"
-        value="add_cookie"
-      >
+      <button type="submit" class="btn btn-success" name="action" value="add_cookie">
         Додати кукі
       </button>
     </form>
 
     <h2 class="mt-4">Видалити кукі</h2>
-    <form
-      method="POST"
-      action="{{ url_for('users_bp.profile') }}"
-      class="border p-3 rounded"
-    >
+    <form method="POST" action="{{ url_for('users_bp.profile') }}" class="border p-3 rounded">
       <div class="mb-3">
-        <label for="cookie_key_to_delete" class="form-label"
-          >Ключ кукі для видалення</label
-        >
-        <input
-          type="text"
-          name="cookie_key_to_delete"
-          id="cookie_key_to_delete"
-          class="form-control"
-          required
-        />
+        <label for="cookie_key_to_delete" class="form-label">Ключ кукі для видалення</label>
+        <input type="text" name="cookie_key_to_delete" id="cookie_key_to_delete" class="form-control" required />
       </div>
-      <button
-        type="submit"
-        class="btn btn-warning"
-        name="action"
-        value="delete_one"
-      >
+      <button type="submit" class="btn btn-warning" name="action" value="delete_one">
         Видалити за ключем
       </button>
     </form>
 
     <h2 class="mt-4">Видалити всі кукі</h2>
-    <form
-      method="POST"
-      action="{{ url_for('users_bp.profile') }}"
-      class="border p-3 rounded"
-    >
-      <button
-        type="submit"
-        class="btn btn-danger"
-        name="action"
-        value="delete_all"
-      >
+    <form method="POST" action="{{ url_for('users_bp.profile') }}" class="border p-3 rounded">
+      <button type="submit" class="btn btn-danger" name="action" value="delete_all">
         Видалити всі кукі (крім сесії)
       </button>
     </form>
@@ -127,9 +71,7 @@ request.cookies.get('theme', 'dark') %}
     {% if request.cookies %}
     <ul class="list-group">
       {% for key, value in request.cookies.items() %}
-      <li
-        class="list-group-item d-flex justify-content-between align-items-center text-break"
-      >
+      <li class="list-group-item d-flex justify-content-between align-items-center text-break">
         <div>
           <strong class="me-2">{{ key }}:</strong>
           <span>{{ value[:50] }}{{ '...' if value|length > 50 else '' }}</span>

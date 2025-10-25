@@ -11,3 +11,5 @@ htmlcov/
 .tox/
 docs/_build/
 .pytest_cache
+
+logs

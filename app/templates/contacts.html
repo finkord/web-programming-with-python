@@ -1,5 +1,6 @@
-{% extends "base.html" %} {% block content %}
-<div class="row justify-content-center">
+{% extends "base.html" %} {% block content %} {% from "_macros.html" import
+render_field %}
+<div class="row justify-content-center py-2">
   <div class="col-lg-8">
     <div class="card p-4 p-md-5 shadow">
       <div class="card-body">
@@ -11,86 +12,38 @@
 
         <!-- Соціальні мережі -->
         <div class="text-center mb-5 contact-links">
-          <a href="https://t.me/Finkord" target="_blank" title="Telegram"
-            ><i class="bi bi-telegram"></i
-          ></a>
-          <a
-            href="https://linkedin.com/in/volodymyr-fufalko-5a12432b5"
-            target="_blank"
-            title="LinkedIn"
-            ><i class="bi bi-linkedin"></i
-          ></a>
+          <a href="https://t.me/Finkord" target="_blank" title="Telegram"><i class="bi bi-telegram"></i></a>
+          <a href="https://linkedin.com/in/volodymyr-fufalko-5a12432b5" target="_blank" title="LinkedIn"><i
+              class="bi bi-linkedin"></i></a>
         </div>
 
-        <div id="alert-placeholder"></div>
+        <form id="contactForm" method="POST" novalidate>
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            {{ render_field(form.name, placeholder="Ім'я") }}
+          </div>
+          <div class="mb-3">
+            {{ render_field(form.email, placeholder="name@example.com") }}
+          </div>
 
-        <!-- Форма-заглушка -->
-        <form id="contactForm">
           <div class="mb-3">
-            <label for="name" class="form-label">Ваше ім'я</label>
-            <input
-              type="text"
-              class="form-control"
-              id="name"
-              placeholder="Ім'я"
-              required
-            />
+            {{ render_field(form.phone, placeholder="+380123412345") }}
           </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Ваш Email</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              placeholder="name@example.com"
-              required
-            />
-          </div>
+
+          <div class="mb-3">{{ render_field(form.subject) }}</div>
+
           <div class="mb-4">
-            <label for="message" class="form-label">Повідомлення</label>
-            <textarea
-              class="form-control"
-              id="message"
-              rows="5"
-              placeholder="Напишіть ваше повідомлення тут..."
-              required
-            ></textarea>
+            {{ render_field(form.message, placeholder=" Напишіть ваше повідомлення тут...") }}
           </div>
           <div class="d-grid">
-            <button type="submit" class="btn btn-primary btn-lg">
-              Надіслати повідомлення
-            </button>
+            {{ form.submit(class="btn btn-primary btn-lg") }}
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
+
 {% endblock %} {% block scripts %}
-<script>
-  // Обробка відправки форми
-  const contactForm = document.getElementById("contactForm");
-  const alertPlaceholder = document.getElementById("alert-placeholder");
-
-  contactForm.addEventListener("submit", function (event) {
-    // Запобігаємо стандартній відправці форми
-    event.preventDefault();
-
-    // Створюємо сповіщення про успішну "відправку"
-    const alertDiv = document.createElement("div");
-    alertDiv.className = "alert alert-success alert-dismissible fade show";
-    alertDiv.role = "alert";
-    alertDiv.innerHTML = `
-            <strong>Дякую!</strong> Ваше повідомлення було успішно "надіслано".
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        `;
-
-    // Додаємо сповіщення на сторінку
-    alertPlaceholder.innerHTML = ""; // Очищуємо попередні сповіщення
-    alertPlaceholder.append(alertDiv);
-
-    // Очищуємо поля форми
-    contactForm.reset();
-  });
-</script>
+<script></script>
 {% endblock %}

@@ -1,53 +1,79 @@
-from flask import Blueprint, url_for, redirect, request, render_template, flash, session,request,request, make_response
+from flask import Blueprint, url_for, redirect, request, render_template, flash, session, make_response
+from .forms import LoginForm
+from app import app # Assuming the Flask app instance is imported as 'app'
 
-# Defining a blueprint
+# Defining a blueprint for user-related routes
 users_bp = Blueprint(
     'users_bp', __name__,
     template_folder='templates',
     static_folder='static'
 )
 
-@users_bp.route("/hi/<string:name>") #/hi/ivan?age=45
-def greetings (name):
+@users_bp.route("/hi/<string:name>")  # /hi/ivan?age=45
+def greetings(name):
+    """Renders a greeting page with a name (uppercase) and optional age from query params."""
     name = name.upper()
-    age = request.args.get("age", None, int)
-    return render_template("users/hi.html",name=name, age=age, title="Greating Page")
+    # Safely get 'age' argument, defaulting to None, and convert to int
+    age = request.args.get("age", None, type=int)
+    return render_template("users/hi.html", name=name, age=age, title="Greeting Page")
 
 @users_bp.route("/admin")
 def admin():
-    to_url = url_for("users_bp.greetings", name="administrator", age=45, _external=True,title="Greating Page")
+    """Redirects to the greetings route with specific parameters for 'administrator'."""
+    # Example of generating an external URL
+    to_url = url_for("users_bp.greetings", name="administrator", age=45, _external=True, title="Greeting Page")
     print(to_url)
     return redirect(to_url)
 
 @users_bp.route("/login", methods=['GET', 'POST'])
 def login():
-    # error = None
-    if request.method == 'POST':
-        if request.form['username'] != 'admin' or \
-                request.form['password'] != 'secret':
-            # error = 'Invalid credentials'
-            flash('Invalid credentials','error')
-        else:
-            session['username'] = request.form['username']
-            flash('You were successfully logged in','success')
+    """Handles user login, form validation, session management, and logging."""
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        remember = form.remember.data
+
+        # Simple hardcoded credential check
+        if username == 'admin' and password == 'secret':
+            session['username'] = username
+
+            # Log successful login attempt
+            app.logger.info(f"Successful login for user: {username}")
+
+            remember_msg = "із запам'ятовуванням" if remember else "без запам'ятовування"
+            flash(f"Вхід успішно виконано, {username}! ({remember_msg})", 'success')
 
             return redirect(url_for('users_bp.profile'))
-    return render_template("users/login.html",title="Login Page")
 
-@users_bp.route("/profile", methods=["GET", "POST"])  # Додано methods
+        else:
+            # Log failed login attempt
+            app.logger.warning(f"Failed login attempt for user: {username}")
+
+            flash('Неправильне ім\'я користувача або пароль.', 'error')
+            return redirect(url_for('users_bp.login'))
+
+    # Log form validation errors for POST requests
+    elif request.method == 'POST':
+        app.logger.debug(f"Login form validation failed. Errors: {form.errors}")
+
+    return render_template("users/login.html", title="Login Page", form=form)
+
+@users_bp.route("/profile", methods=["GET", "POST"])
 def profile():
+    """Displays user profile and handles cookie management (add/delete)."""
     username = session.get("username")
     if not username:
         flash("Please log in to view this page.", "warning")
         return redirect(url_for("users_bp.login"))
 
-    # --- Обробка POST-запитів (коли форма відправлена) ---
+    # --- Handle POST requests (form submission) ---
     if request.method == "POST":
-        # Створюємо відповідь-перенаправлення.
-        # Кукі встановлюються на об'єкт відповіді (response).
+        # Create a redirect response object; cookies are set on the response object.
         resp = make_response(redirect(url_for("users_bp.profile")))
 
-        # Визначаємо, яка форма була відправлена, за іменем кнопки
+        # Determine which action button was pressed
         action = request.form.get("action")
 
         if action == "add_cookie":
@@ -57,10 +83,10 @@ def profile():
 
             if key and value:
                 max_age = None
-                # Встановлюємо термін дії, якщо він вказаний і є числом
+                # Set max_age if provided and valid
                 if expiry_str and expiry_str.isdigit():
                     max_age = int(expiry_str)
-                
+
                 resp.set_cookie(key, value, max_age=max_age)
                 flash(f"Кукі '{key}' успішно додано.", "success")
 
@@ -71,10 +97,10 @@ def profile():
                 flash(f"Кукі '{key_to_delete}' видалено.", "info")
 
         elif action == "delete_all":
-            # Проходимо по всіх кукі, які прийшли в запиті
+            # Iterate through all cookies received in the request
             deleted_count = 0
             for key in request.cookies.keys():
-                # НЕ видаляємо кукі сесії, інакше користувач вийде з системи
+                # DO NOT delete the session cookie, as it would log the user out
                 if key != "session":
                     resp.delete_cookie(key)
                     deleted_count += 1
@@ -82,7 +108,7 @@ def profile():
 
         return resp
 
-    # --- Обробка GET-запиту (просто показ сторінки) ---
+    # --- Handle GET request (just display the page) ---
     return render_template(
         "users/profile.html", title="Profile Page", username=username
     )
@@ -90,6 +116,7 @@ def profile():
 
 @users_bp.route("/logout")
 def logout():
+    """Logs out the user by removing 'username' from the session."""
     session.pop("username", None)
 
     flash("You have been logged out.", "info")
@@ -97,20 +124,19 @@ def logout():
 
 @users_bp.route("/set-theme/<theme_name>")
 def set_theme(theme_name):
-    """
-    Встановлює кольорову схему, зберігаючи її в кукі.
-    """
+    """Sets the color scheme and saves it to a cookie."""
     if theme_name not in ("light", "dark"):
-        theme_name = "dark"  # За замовчуванням
+        theme_name = "dark"  # Default to dark
 
+    # Redirects back to the page the user came from, or profile if not available
     redirect_to = request.referrer or url_for("users_bp.profile")
 
-    # 3. Створюємо об'єкт відповіді (response), щоб встановити кукі
+    # Create the response object for setting the cookie
     resp = make_response(redirect(redirect_to))
 
-    # 4. Встановлюємо кукі 'theme' на 1 рік
-    max_age_seconds = 365 * 24 * 60 * 60  # (днів * годин * хвилин * секунд)
+    # Set the 'theme' cookie for 1 year
+    max_age_seconds = 365 * 24 * 60 * 60
     resp.set_cookie("theme", theme_name, max_age=max_age_seconds)
 
     flash(f"Тему змінено на {theme_name}.", "info")
-    return resp    
+    return resp
