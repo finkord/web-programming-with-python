@@ -1,28 +1,22 @@
 #
 
-![Local application run](screenshots/invalid_creds.png)
-*Invalid credentials*
+![Local application run](screenshots/empty_fields_submit_error.png)
+*Пусті поля в контактні формі*
 
-![Local application run](screenshots/succesful_login.png)
-*Successful login*
+![Local application run](screenshots/succesful_submit.png)
+*Успішне відправлення повідомлення*
 
-![Local application run](screenshots/theme_switch.png)
-*Switching the site theme*
+![Local application run](screenshots/log_file.png)
+*Лог файл*
 
-![Local application run](screenshots/add_cookie.png)
-*Adding a test cookie*
+![Local application run](screenshots/empty_fields.png)
+*пусті поля в формі логіну*
 
-![Local application run](screenshots/delete_cookie_by_a_key.png)
-*Deleting a cookie by key*
+![Local application run](screenshots/short_password.png)
+*Короткий пароль*
 
-![Local application run](screenshots/log_out.png)
-*Logging out*
-
-![Local application run](screenshots/warning_flash.png)
-*Warning notification: login required to access the page*
-
-![Local application run](screenshots/mobile-view.png)
-*Mobile view of the site*
+![Local application run](screenshots/login_succesful.png)
+*Успішний вхід*
 
 ## Code Explanations
 

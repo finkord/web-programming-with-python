@@ -27,7 +27,7 @@ def contacts():
             # 2. Logging the received data
             log_message = (
                 f"CONTACT_FORM: Name={name}, Email={email}, "
-                f"Subject={subject}, Message_len={len(message)}"
+                f"Subject={subject}, Message={message} Message_len={len(message)}"
             )
             app.logger.info(log_message)
 
