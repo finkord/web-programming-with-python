@@ -1,22 +1,22 @@
 #
 
-![Local application run](screenshots/empty_fields_submit_error.png)
-*Пусті поля в контактні формі*
+![Local application run](screenshots/flask_shell.png)
+*Створення бази даних через фласк оболонку*
 
-![Local application run](screenshots/succesful_submit.png)
-*Успішне відправлення повідомлення*
+![Local application run](screenshots/migration_init.png)
+*Ініціалізація міграції і бази даних*
 
-![Local application run](screenshots/log_file.png)
-*Лог файл*
+![Local application run](screenshots/migrate_is_active_author.png)
+*Міграція*
 
-![Local application run](screenshots/empty_fields.png)
-*Пусті поля в формі логіну*
+![Local application run](screenshots/sqllite_posts.png)
+*База даних після міграції (добавлено два нових поля)*
 
-![Local application run](screenshots/short_password.png)
+<!-- ![Local application run](screenshots/short_password.png)
 *Короткий пароль*
 
 ![Local application run](screenshots/login_succesful.png)
-*Успішний вхід*
+*Успішний вхід* -->
 
 ## Code Explanations
 
