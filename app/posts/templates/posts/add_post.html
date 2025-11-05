@@ -1,2 +1,39 @@
-{% extends 'base.html' %} {% block
-content %} {% endblock %}
+{% extends "base.html" %}
+{% from "macros/postform_macros.html" import render_field %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-md-8 offset-md-2">
+        <h1 class="text-center mb-4">Створення нового поста</h1>
+
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+
+                <form method="POST" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    {{ render_field(form.title, placeholder="Введіть заголовок") }}
+
+                    {{ render_field(form.content, placeholder="Вміст вашого поста...", rows=10) }}
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ render_field(form.posted) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ render_field(form.category) }}
+                        </div>
+                    </div>
+
+                    {{ render_field(form.is_active) }}
+
+                    <div class="d-grid mt-4">
+                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

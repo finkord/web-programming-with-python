@@ -1,27 +1,90 @@
-{% extends 'base.html' %} {% block title %} POSTS {% endblock %} {% block
-content %}
+{% extends 'base.html' %}
 
+{% block content %}
 <div class="container mt-5">
-  <h1 class="mb-4 text-center text-primary">Articles 📚</h1>
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
 
-  <ul class="list-group">
-    {% for post in posts %}
+      {% set show_all = request.args.get('show_all') == 'true' %}
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h1 class="mb-0 text-primary">Усі пости 📚</h1>
 
-    <li
-      class="list-group-item d-flex justify-content-between align-items-center mb-3 border-0 shadow-sm rounded"
-    >
-      <div class="h5 mb-0">
-        <a href="{{post['id']}}" class="text-decoration-none stretched-link">
-          {{ post["title"] }}
+          {% if show_all %}
+          <a href="{{ url_for('posts.get_posts') }}" class="btn btn-link btn-sm p-0">
+            &larr; Показати тільки активні
+          </a>
+          {% else %}
+          <a href="{{ url_for('posts.get_posts', show_all='true') }}" class="btn btn-link btn-sm p-0">
+            Показати всі (включно з прихованими)
+          </a>
+          {% endif %}
+        </div>
+
+        <a href="{{ url_for('posts.create') }}" class="btn btn-primary">
+          Створити новий пост
         </a>
       </div>
 
-      <span class="badge bg-secondary rounded-pill me-3">
-        ID: {{ post["id"] }}
-      </span>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
+      <div class="row">
+        {% for post in posts %}
+        <div class="col-md-4 mb-4">
+          <div class="card shadow-sm h-100">
 
+            <img src="{{ url_for('static', filename='images/postdefault.jpg') }}"
+              class="card-img-top {{ 'opacity-75' if not post.is_active else '' }}" alt="Зображення поста">
+
+            <div class="card-body d-flex flex-column">
+
+              <h3 class="card-title h5">
+                <a href="{{ url_for('posts.detail_post', id=post.id) }}" class="text-decoration-none">
+                  {{ post.title }}
+                </a>
+              </h3>
+
+              <p class="card-text">
+                {{ post.content | truncate(100, True) }}
+              </p>
+            </div>
+
+            <div class="card-footer bg-light mt-auto">
+              <div class="d-flex justify-content-between align-items-center">
+
+                <a href="{{ url_for('posts.detail_post', id=post.id) }}" class="btn btn-outline-primary btn-sm">
+                  Читати далі &rarr;
+                </a>
+
+                <div class="text-end">
+                  <span class="badge bg-secondary rounded-pill me-1">
+                    {{ post.category.name.capitalize() }}
+                  </span>
+
+                  {% if not post.is_active %}
+                  <span class="badge bg-warning text-dark rounded-pill">
+                    Прихований пост
+                  </span>
+                  {% endif %}
+
+                  <div class="text-muted small mt-1">
+                    {{ post.posted.strftime('%Y-%m-%d') }}
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% else %}
+        <div class="col-12">
+          <div class="alert alert-info text-center" role="alert">
+            Наразі немає жодного поста, що відповідає критеріям.
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

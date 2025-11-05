@@ -5,41 +5,28 @@
 <div class="row mt-5">
   <div class="col-md-6 offset-md-3">
     <h1 class="text-center mb-4">Login</h1>
-
-    {# Блок для відображення помилок, якщо вони є #}
-    {% if error %}
-    <div class="alert alert-danger" role="alert">
-      <strong>Error:</strong> {{ error }}
-    </div>
-    {% endif %}
-
     <div class="card shadow-sm">
       <div class="card-body p-4">
 
         <form method="POST" novalidate>
-          {# 1. Додано CSRF-токен (обов'язково для Flask-WTF) #}
           {{ form.hidden_tag() }}
           <!-- {{form.csrf_token}} -->
 
           <div class="mb-3">
-            {# 2. Видалено закоментований HTML #}
             {{ render_field(form.username, placeholder="Ім'я користувача") }}
           </div>
 
           <div class="mb-3">
-            {# 2. Видалено закоментований HTML #}
             {{ render_field(form.password, placeholder="Пароль") }}
           </div>
 
-          {# 3. Правильна стилізація чекбоксу для Bootstrap 5 #}
           <div class="form-check mb-3">
             {{ form.remember(class="form-check-input") }}
             {{ form.remember.label(class="form-check-label") }}
           </div>
 
           <div class="d-grid">
-            {# 2. Видалено закоментований <button> #}
-              {{ form.submit(class="btn btn-info text-white") }}
+            {{ form.submit(class="btn btn-info text-white") }}
           </div>
         </form>
 

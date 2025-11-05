@@ -1,27 +1,52 @@
-{% extends 'base.html' %} {% block title %} POST № {{post["id"]}} |
-{{post["title"]}} {% endblock %} {% block content %}
+{% extends 'base.html' %}
 
+{% block content %}
 <div class="container mt-5">
-  <div class="card shadow-lg mb-4">
-    <div class="card-header bg-secondary text-white">
-      <h1 class="h3 mb-0">
-        <span class="badge bg-dark text-light me-1">{{post["id"]}}</span>
-        {{post["title"]}}
-      </h1>
-    </div>
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
 
-    <div class="card-body">
-      <p class="card-text lead">{{ post.get('content') }}</p>
-    </div>
+      <div class="card shadow mb-4">
+        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+          <!-- 1. Заголовок -->
+          <h1 class="h3 mb-0">
+            {{ post.title }}
+          </h1>
+          <!-- 2. Категорія -->
+          <span class="badge bg-secondary rounded-pill fs-6">
+            {{ post.category.name.capitalize() }}
+          </span>
+        </div>
 
-    <!-- <div class="card-footer text-muted d-flex justify-content-end">
-      <small>Дата публікації: 2024-01-01 (Приклад)</small>
-    </div> -->
+        <div class="card-body">
+          <!-- 3. Основний вміст -->
+          <p class="card-text fs-5" style="white-space: pre-wrap;">{{ post.content }}</p>
+        </div>
+
+        <div class="card-footer text-muted d-flex justify-content-between align-items-center">
+          <!-- 4. Інформація про автора/дату -->
+          <div>
+            <small class="me-2"><strong>Автор:</strong> {{ post.author }}</small>
+            <small><strong>Дата:</strong> {{ post.posted.strftime('%Y-%m-%d %H:%M') }}</small>
+          </div>
+
+          <!-- 5. Кнопки керування (Редагувати/Видалити) -->
+          <div class="btn-group" role="group">
+            <a href="{{ url_for('posts.update', id=post.id) }}" class="btn btn-sm btn-outline-warning">
+              Редагувати
+            </a>
+            <a href="{{ url_for('posts.delete', id=post.id) }}" class="btn btn-sm btn-outline-danger">
+              Видалити
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Кнопка "Повернутися" (з виправленим url_for) -->
+      <a href="{{ url_for('posts.get_posts') }}" class="btn btn-outline-secondary">
+        &larr; Повернутися до всіх постів
+      </a>
+
+    </div>
   </div>
-
-  <a href="{{ url_for('posts.get_posts') }}" class="btn btn-outline-secondary">
-    <i class="bi bi-arrow-left"></i> Повернутися до всіх постів
-  </a>
 </div>
-
 {% endblock %}
