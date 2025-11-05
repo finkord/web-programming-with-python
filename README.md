@@ -26,3 +26,6 @@
 
 ![Local application run](screenshots/flash_delete_post.png)
 *повідомлення про видалення*
+
+![Local application run](screenshots/admin.png)
+*повідомлення про видалення*
