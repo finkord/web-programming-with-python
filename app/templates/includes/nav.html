@@ -1,40 +1,27 @@
 <!-- Навігація -->
 <nav class="navbar navbar-expand-lg navbar-dark shadow-sm fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="{{ url_for('resume') }}"
-      >Володимир Фуфалько</a
-    >
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+    <a class="navbar-brand" href="{{ url_for('main.resume') }}">Володимир Фуфалько</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('resume') }}#about">Про мене</a>
+          <a class="nav-link" href="{{ url_for('main.resume') }}#about">Про мене</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('resume') }}#experience"
-            >Досвід</a
-          >
+          <a class="nav-link" href="{{ url_for('main.resume') }}#experience">Досвід</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('resume') }}#skills">Навички</a>
+          <a class="nav-link" href="{{ url_for('main.resume') }}#skills">Навички</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('resume') }}#education"
-            >Освіта</a
-          >
+          <a class="nav-link" href="{{ url_for('main.resume') }}#education">Освіта</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('contacts') }}">Контакти</a>
+          <a class="nav-link" href="{{ url_for('main.contacts') }}">Контакти</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('users_bp.admin')}}">Admin</a>
@@ -48,9 +35,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('users_bp.profile')}}"
-            >Profile</a
-          >
+          <a class="nav-link" href="{{ url_for('users_bp.profile')}}">Profile</a>
         </li>
       </ul>
     </div>

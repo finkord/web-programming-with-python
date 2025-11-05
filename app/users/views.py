@@ -1,6 +1,5 @@
-from flask import Blueprint, url_for, redirect, request, render_template, flash, session, make_response
+from flask import Blueprint, url_for, redirect, request, render_template, flash, session, make_response, current_app
 from .forms import LoginForm
-from app import app # Assuming the Flask app instance is imported as 'app'
 
 # Defining a blueprint for user-related routes
 users_bp = Blueprint(
@@ -40,7 +39,7 @@ def login():
             session['username'] = username
 
             # Log successful login attempt
-            app.logger.info(f"Successful login for user: {username}")
+            current_app.logger.info(f"Successful login for user: {username}")
 
             remember_msg = "із запам'ятовуванням" if remember else "без запам'ятовування"
             flash(f"Вхід успішно виконано, {username}! ({remember_msg})", 'success')
@@ -49,14 +48,14 @@ def login():
 
         else:
             # Log failed login attempt
-            app.logger.warning(f"Failed login attempt for user: {username}")
+            current_app.logger.warning(f"Failed login attempt for user: {username}")
 
             flash('Неправильне ім\'я користувача або пароль.', 'error')
             return redirect(url_for('users_bp.login'))
 
     # Log form validation errors for POST requests
     elif request.method == 'POST':
-        app.logger.debug(f"Login form validation failed. Errors: {form.errors}")
+        current_app.logger.debug(f"Login form validation failed. Errors: {form.errors}")
 
     return render_template("users/login.html", title="Login Page", form=form)
 

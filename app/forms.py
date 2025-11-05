@@ -13,7 +13,7 @@ from wtforms.validators import (
     Regexp
 )
 
-class PostForm(FlaskForm):
+class ContactForm(FlaskForm):
     """
     Форма зворотного зв'язку (контактна форма) 
     з повною валідацією полів.

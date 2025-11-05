@@ -113,7 +113,7 @@ main {
 .btn-primary {
   background-color: #bb86fc;
   border-color: #bb86fc;
-  border-radius: 20px; /* Стиль "таблетки" */
+  /* border-radius: 20px;  */
   padding: 10px 24px;
   font-weight: 500;
   transition: background-color 0.3s ease;

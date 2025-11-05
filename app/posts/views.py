@@ -9,7 +9,7 @@ posts = [
 
 @post_bp.route('/') 
 def get_posts():
-    return render_template("posts.html", posts=posts)
+    return render_template("all_posts.html", posts=posts)
 
 @post_bp.route('/<int:id>') 
 def detail_post(id):

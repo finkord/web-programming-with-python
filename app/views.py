@@ -1,18 +1,21 @@
-from flask import render_template, flash, redirect, url_for, request
-from .forms import PostForm
-from . import app  # Assuming the Flask app instance is imported as 'app'
+# Import current_app to access the app's logger
+from flask import Blueprint, render_template, flash, redirect, url_for, request, current_app
+from .forms import ContactForm
 
+main = Blueprint('main', __name__)
 
-@app.route('/')
+# Use @main.route, not @app.route
+@main.route('/')
 def resume():
     """Renders the resume page."""
     return render_template('resume.html', title="Resume")
 
 
-@app.route('/contacts', methods=['GET', 'POST'])
+# Use @main.route, not @app.route
+@main.route('/contacts', methods=['GET', 'POST'])
 def contacts():
     """Handles the contact page and form validation."""
-    form = PostForm()
+    form = ContactForm()
 
     # 1. Block executes if the form was submitted (POST) and passed validation
     if form.validate_on_submit():
@@ -24,12 +27,12 @@ def contacts():
             subject = form.subject.data
             message = form.message.data
 
-            # 2. Logging the received data
+            # 2. Logging the received data (use current_app.logger)
             log_message = (
                 f"CONTACT_FORM: Name={name}, Email={email}, "
                 f"Subject={subject}, Message={message} Message_len={len(message)}"
             )
-            app.logger.info(log_message)
+            current_app.logger.info(log_message)
 
             # 3. Flash success message
             flash(
@@ -38,17 +41,19 @@ def contacts():
             )
 
         except Exception as e:
-            # 4. Error handling (in case logging or other logic fails)
-            app.logger.error(f"Error processing contact form for {email}: {e}")
+            # 4. Error handling (use current_app.logger)
+            current_app.logger.error(f"Error processing contact form for {email}: {e}")
             flash(
                 f"An error occurred while processing your request. Please try again later.",
                 "error"
             )
             # Redirect even if an error occurred to prevent resubmission
-            return redirect(url_for('contacts'))
+            # Use '.contacts' because it's a route on the *same* blueprint
+            return redirect(url_for('.contacts'))
 
         # 5. Post/Redirect/Get pattern: redirect to prevent form resubmission
-        return redirect(url_for('contacts'))
+        # Note: Using '.contacts' is best practice for routes on the same blueprint
+        return redirect(url_for('.contacts'))
 
     # 6. If it's a POST request but validation failed, flash an error
     if request.method == 'POST':
