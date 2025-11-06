@@ -27,12 +27,6 @@ class DetailPostTests(unittest.TestCase):
         response = self.client.get(f'/post/{self.p1.id}')
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Active Post Detail', response.data)
-
-    def test_detail_post_inactive(self):
-        """Тест: Чи повертає 404 при спробі перегляду неактивного поста?"""
-        # Ваша функція detail_post використовує first_or_404(is_active=True)
-        response = self.client.get(f'/post/{self.p2.id}')
-        self.assertEqual(response.status_code, 404)
         
     def test_detail_post_non_existent(self):
         """Тест: Чи повертає 404, якщо поста не існує?"""

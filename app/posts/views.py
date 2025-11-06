@@ -64,7 +64,7 @@ def get_posts():
 @post_bp.route('/<int:id>') 
 def detail_post(id):
     # .first_or_404() автоматично поверне 404, якщо пост не знайдено
-    post = Post.query.filter_by(id=id, is_active=True).first_or_404()
+    post = Post.query.filter_by(id=id).first_or_404()
     
     return render_template("detail_post.html", post=post)
 

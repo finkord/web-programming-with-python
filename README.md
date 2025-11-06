@@ -12,7 +12,7 @@
 ![Local application run](screenshots/sqllite_posts.png)
 *База даних після міграції*
 
-![Local application run](screenshots/tests.png)
+![Local application run](screenshots/tests3.png)
 *Успішне проходження тестів*
 
 ![Local application run](screenshots/flash_create_post.png)
@@ -28,4 +28,4 @@
 *повідомлення про видалення*
 
 ![Local application run](screenshots/admin.png)
-*повідомлення про видалення*
+*пост від адміна*
