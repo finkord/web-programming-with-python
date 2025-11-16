@@ -11,10 +11,19 @@
           <h1 class="h3 mb-0">
             {{ post.title }}
           </h1>
-          <!-- 2. Категорія -->
-          <span class="badge bg-secondary rounded-pill fs-6">
-            {{ post.category.name.capitalize() }}
-          </span>
+          <div>
+            <!-- Вивід тегів поста -->
+            {% if post.tags %}
+
+            {% for tag in post.tags %}
+            <span class="badge bg-info text-dark">{{ tag.name }}</span>
+            {% endfor %}
+            {% endif %}
+            <!-- 2. Категорія -->
+            <span class="badge bg-secondary rounded-pill fs-6">
+              {{ post.category.name.capitalize() }}
+            </span>
+          </div>
         </div>
 
         <div class="card-body">
@@ -25,7 +34,7 @@
         <div class="card-footer text-muted d-flex justify-content-between align-items-center">
           <!-- 4. Інформація про автора/дату -->
           <div>
-            <small class="me-2"><strong>Автор:</strong> {{ post.author }}</small>
+            <small class="me-2"><strong>Автор:</strong> {{ post.user.username }}</small>
             <small><strong>Дата:</strong> {{ post.posted.strftime('%Y-%m-%d %H:%M') }}</small>
           </div>
 

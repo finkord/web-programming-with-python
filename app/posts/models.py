@@ -3,51 +3,75 @@ from datetime import datetime
 from .. import db
 import enum
 
+from sqlalchemy import (
+    Integer, String, Text, DateTime, 
+    Boolean, Enum, ForeignKey
+)
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 class PostCategory(enum.Enum):
     news = 'news'
     publication = 'publication'
     tech = 'tech'
     other = 'other'
 
+post_tags = db.Table(
+    'post_tags',
+    db.Column('post_id', db.Integer, db.ForeignKey('posts.id'), primary_key=True),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'), primary_key=True)
+)
+
 class Post(db.Model):
-    """
-    ORM-модель Post для Flask-SQLAlchemy.
-    """
     __tablename__ = 'posts'
 
-    # Поле id (Integer, Primary Key)
-    id = db.Column(db.Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    
+    title: Mapped[str] = mapped_column(String(150), nullable=False)
+    
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    
+    posted: Mapped[datetime] = mapped_column(
+        DateTime, 
+        default=datetime.utcnow
+    )
+    
+    category: Mapped[PostCategory] = mapped_column(
+        Enum(PostCategory), 
+        nullable=True  
+    )
+    
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
-    # Поле title (String(150), Not Null)
-    # nullable=False еквівалентно Not Null
-    title = db.Column(db.String(150), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user: Mapped["User"] = relationship(back_populates="posts")
+    tags: Mapped[list["Tag"]] = relationship(secondary=post_tags, back_populates="posts")
 
-    # Поле content (Text, Not Null)
-    content = db.Column(db.Text, nullable=False)
+    def __repr__(self) -> str:
+        return f"Post(id={self.id!r}, title={self.title!r})"
 
-    # Поле posted (DateTime, Default = datetime.utcnow)
-    posted = db.Column(db.DateTime, default=datetime.utcnow)
+class User(db.Model):
+    __tablename__ = "users"
 
-    # Поле category (Enum)
-    category = db.Column(db.Enum(PostCategory))
+    id: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str] = mapped_column(String(80), unique=True, nullable=False)
+    password: Mapped[str] = mapped_column(String(255), nullable=False)
+    email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
 
-    #Поле is_active (Boolean, Default = True)
-    # Визначає, чи пост активний і відображається на сайті
-    is_active = db.Column(db.Boolean, default=True)
+    posts: Mapped[list["Post"]] = relationship(
+        back_populates="user", 
+        cascade="all, delete-orphan"
+    )
 
-    # Поле author (String(20), Default = 'Anonymous')
-    # Ім’я автора поста
-    author = db.Column(db.String(20), default='Anonymous')
+    def __repr__(self) -> str:
+        return f"User(id={self.id!r}, username={self.username!r})"
 
-    def __repr__(self):
-        """
-        Метод __repr__ згідно з завданням.
-        Повертає офіційне рядкове представлення об'єкта.
-        """
-        return f"<Post(id={self.id}, title='{self.title}', author='{self.author}')>"
+class Tag(db.Model):
+    __tablename__ = 'tags'
 
-    # def __str__(self):
-    #     """
-    #     Метод __str__ повертає "людське" представлення об'єкта.
-    #     """
-    #     return self.title
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(db.String, unique=True, nullable=False)
+    posts: Mapped[list["Post"]] = relationship(secondary=post_tags, back_populates="tags")
+
+    def __repr__(self) -> str:
+        return f"Tag(id={self.id!r}, name={self.name!r})"
+

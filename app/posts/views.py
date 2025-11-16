@@ -2,7 +2,8 @@ from flask import render_template, abort, redirect, url_for, flash, request, cur
 from . import post_bp
 from .forms import PostForm
 from .. import db
-from .models import Post, PostCategory # Потрібно імпортувати моделі
+from .models import User, Post, PostCategory,Tag
+from sqlalchemy import select
 
 # url_prefix="/post"
 
@@ -12,16 +13,26 @@ from .models import Post, PostCategory # Потрібно імпортувати
 @post_bp.route('/create', methods=["GET", "POST"]) 
 def create():
     form = PostForm()
+    
+    user_query = select(User).order_by(User.username)
+    form.user.choices = [
+        (user.id, user.username) for user in db.session.scalars(user_query)
+    ]
+
+    tag_query = select(Tag).order_by(Tag.name)
+    form.tags.choices = [
+        (tag.id, tag.name)    # id → value, name → label
+        for tag in db.session.scalars(tag_query)
+    ]
+
     if form.validate_on_submit():
         
-        # --- ЛОГІКА ДЛЯ ВИЗНАЧЕННЯ АВТОРА ---
-        author_name = 'Anonymous' # Значення за замовчуванням
-        
-        # Припускаємо, що ви зберігаєте ім'я користувача 
-        # в session['username'] під час логіну
-        if 'username' in session:
-            author_name = session['username']
-        # ---------------------------------------
+        selected_user = db.session.get(User, form.user.data)
+
+        selected_tags = [
+            db.session.get(Tag, tag_id) 
+            for tag_id in form.tags.data
+        ]
 
         new_post = Post(
             title=form.title.data,
@@ -29,16 +40,17 @@ def create():
             posted=form.posted.data,
             category=PostCategory(form.category.data),
             is_active=form.is_active.data,
-            author=author_name  # <-- 2. Додано нове поле
+            user=selected_user  
         )
+
+        new_post.tags.extend(selected_tags)
         
         db.session.add(new_post)
         db.session.commit()
         
         flash("Пост успішно створено!", "success")
-        # 3. Виправлено помилку в url_for (було 'posts.get_posts')
-        return redirect(url_for('posts.get_posts'))
-
+        
+        return redirect(url_for('posts.get_posts')) 
     return render_template("add_post.html", form=form, title="Створення поста")
 
 # ---------------------------------------------------------------
@@ -73,26 +85,50 @@ def detail_post(id):
 # ---------------------------------------------------------------
 @post_bp.route('/<int:id>/update', methods=["GET", "POST"]) 
 def update(id):
-    # .get_or_404() знайде пост за primary key, або поверне 404
     post = Post.query.get_or_404(id)
     
-    # При GET-запиті: створюємо форму, наповнену даними з об'єкта 'post'
-    # При POST-запиті: створюємо форму з даними, що прийшли
-    form = PostForm(obj=post) if request.method == 'GET' else PostForm()
+    if request.method == 'POST':
+        # При POST-запиті форма заповниться з 'request.form'
+        form = PostForm()
+    else: # GET
+        form = PostForm(obj=post)
+        form.user.data = post.user_id # Встановлюємо ID обраного юзера
+        form.tags.data = [tag.id for tag in post.tags] # Встановлюємо список ID тегів
 
+    user_query = select(User).order_by(User.username)
+    form.user.choices = [
+        (user.id, user.username) for user in db.session.scalars(user_query)
+    ]
+    tag_query = select(Tag).order_by(Tag.name)
+    form.tags.choices = [
+        (tag.id, tag.name) for tag in db.session.scalars(tag_query)
+    ]
+
+    # 4. Валідація та оновлення
     if form.validate_on_submit():
-        # Оновлюємо поля існуючого об'єкта 'post' даними з форми
+        
+        # 5. Отримуємо об'єкти User та Tag з БД (як у 'create')
+        selected_user = db.session.get(User, form.user.data)
+        selected_tags = [
+            db.session.get(Tag, tag_id) 
+            for tag_id in form.tags.data
+        ]
+        
+        # 6. Оновлюємо поля існуючого об'єкта 'post'
         post.title = form.title.data
         post.content = form.content.data
         post.posted = form.posted.data
         post.category = PostCategory(form.category.data)
         post.is_active = form.is_active.data
         
+        # 7. Оновлюємо зв'язки
+        post.user = selected_user
+        post.tags = selected_tags  
+
         db.session.commit() # Зберігаємо зміни
         
         flash("Пост успішно оновлено!", "info")
         return redirect(url_for('posts.detail_post', id=post.id))
-
     return render_template("add_post.html", form=form, title="Редагування поста", post=post)
 
 # ---------------------------------------------------------------

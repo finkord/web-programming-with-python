@@ -5,14 +5,15 @@ from wtforms import (
     SubmitField, 
     SelectField,
     BooleanField,
-    DateTimeLocalField  
+    DateTimeLocalField,
+    SelectMultipleField
 )
 from wtforms.validators import (
     DataRequired, 
     Length
 )
 from datetime import datetime
-from .models import PostCategory  
+from .models import PostCategory, User, Tag
 
 class PostForm(FlaskForm):
     """
@@ -45,6 +46,17 @@ class PostForm(FlaskForm):
         format='%Y-%m-%dT%H:%M',  # Важливо для HTML5 <input type="datetime-local">
         default=datetime.utcnow,
         validators=[DataRequired()]
+    )
+
+    user = SelectField(
+        "Автор",
+        coerce=int,
+        validators=[DataRequired()]
+    )
+
+    tags = SelectMultipleField(
+        "Tags", 
+        coerce=int
     )
     
     # category (SelectField) - 'choices' генеруються з вашого Enum 'PostCategory'
