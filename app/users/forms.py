@@ -1,15 +1,59 @@
 from flask_wtf import FlaskForm
 from wtforms import (
+    EmailField,
     StringField,
-    PasswordField,  # Required for password field
-    BooleanField,  # Required for "Remember me" functionality
-    SubmitField
+    PasswordField,  
+    BooleanField,  
+    SubmitField,
+    ValidationError,
 )
 from wtforms.validators import (
     DataRequired,
-    Length
+    Length,
+    EqualTo,
+    Email
 )
 
+from app.users.models import User
+
+class RegistrationForm(FlaskForm):
+    username = StringField(
+        "Ім'я користувача", # Username
+        validators=[DataRequired(), Length(min=4, max=14)]
+    )
+    
+    email = EmailField(
+        "Електронна пошта", # Email
+        validators=[DataRequired(), Email(), Length(max=120)]
+    )
+    
+    password = PasswordField(
+        "Пароль", # Password
+        validators=[DataRequired(), Length(min=6)]
+    )
+    
+    confirm_password = PasswordField(
+        "Підтвердження паролю", # Confirm Password
+        validators=[DataRequired(), EqualTo('password', message="Паролі мають співпадати")]
+    )
+    
+    submit = SubmitField("Зареєструватися")
+
+    def validate_username(self, username):
+        """Перевіряє, чи не існує вже користувач з таким іменем."""
+        # Query the database to find a user with the entered username
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            # If a user is found, raise a validation error
+            raise ValidationError('Це ім\'я користувача вже зайняте. Виберіть інше.')
+            
+    def validate_email(self, email):
+        """Перевіряє, чи не існує вже користувач з такою електронною поштою."""
+        # Query the database to find a user with the entered email
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            # If a user is found, raise a validation error
+            raise ValidationError('Ця електронна пошта вже зареєстрована.')
 
 class LoginForm(FlaskForm):
     """

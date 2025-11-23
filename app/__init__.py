@@ -14,6 +14,8 @@ from logging.handlers import RotatingFileHandler
 from dotenv import load_dotenv
 load_dotenv()
 
+from flask_bcrypt import Bcrypt
+
 class Base(DeclarativeBase):
     metadata = MetaData(naming_convention={
         "ix": 'ix_%(column_0_label)s',
@@ -26,6 +28,8 @@ class Base(DeclarativeBase):
 db = SQLAlchemy(model_class=Base)
 migrate = Migrate()
 
+bcrypt = Bcrypt()
+
 def create_app(config_name: str = os.environ.get("FLASK_CONFIG", "dev")) -> Flask:
 
     app = Flask(__name__)
@@ -34,6 +38,7 @@ def create_app(config_name: str = os.environ.get("FLASK_CONFIG", "dev")) -> Flas
 
     db.init_app(app)
     migrate.init_app(app, db)
+    bcrypt.init_app(app)
 
     # --- START LOGGING CONFIGURATION ---
     if not os.path.exists('logs'):
@@ -69,6 +74,8 @@ def create_app(config_name: str = os.environ.get("FLASK_CONFIG", "dev")) -> Flas
         # Import and register the 'users' Blueprint
         from .users import views as user_views
         app.register_blueprint(user_views.users_bp)
+
+        from .users import models
 
         # Import and register the 'posts' Blueprint
         from .posts import post_bp as posts_blueprint

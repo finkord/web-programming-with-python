@@ -1,5 +1,8 @@
 from flask import Blueprint, url_for, redirect, request, render_template, flash, session, make_response, current_app
-from .forms import LoginForm
+from .forms import LoginForm, RegistrationForm
+from .. import bcrypt
+from .. import db
+from .models import User
 
 # Defining a blueprint for user-related routes
 users_bp = Blueprint(
@@ -24,40 +27,62 @@ def admin():
     print(to_url)
     return redirect(to_url)
 
+@users_bp.route("/register", methods=["GET","POST"])
+def register():
+    form = RegistrationForm()
+    
+    if form.validate_on_submit():
+        
+        hashed_password = User.hash_password(form.password.data)
+
+        user = User(
+            username=form.username.data, 
+            email=form.email.data, 
+            password=hashed_password
+        )
+
+        db.session.add(user)
+        db.session.commit()
+        
+        flash(f"Ваш акаунт створено! Тепер ви можете увійти.", "success")
+        
+        return redirect(url_for('users_bp.login')) 
+    return render_template("users/register.html", title="Реєстрація", form=form)
+
 @users_bp.route("/login", methods=['GET', 'POST'])
 def login():
-    """Handles user login, form validation, session management, and logging."""
+    """Обробляє вхід користувача з перевіркою пароля через хешування."""
     form = LoginForm()
 
     if form.validate_on_submit():
-        username = form.username.data
+        username_or_email = form.username.data  
         password = form.password.data
         remember = form.remember.data
+        
+        user = User.query.filter_by(username=username_or_email).first()
 
-        # Simple hardcoded credential check
-        if username == 'admin' and password == 'secret':
-            session['username'] = username
-
-            # Log successful login attempt
-            current_app.logger.info(f"Successful login for user: {username}")
+        if user and user.check_password(password):
+            
+            session['user_id'] = user.id  
+            session['username'] = user.username 
+            
+            current_app.logger.info(f"Successful login for user: {user.username}")
 
             remember_msg = "із запам'ятовуванням" if remember else "без запам'ятовування"
-            flash(f"Вхід успішно виконано, {username}! ({remember_msg})", 'success')
+            flash(f"Вхід успішно виконано, {user.username}! ({remember_msg})", 'success')
 
             return redirect(url_for('users_bp.profile'))
 
         else:
-            # Log failed login attempt
-            current_app.logger.warning(f"Failed login attempt for user: {username}")
+            current_app.logger.warning(f"Failed login attempt for user: {username_or_email}")
 
             flash('Неправильне ім\'я користувача або пароль.', 'error')
             return redirect(url_for('users_bp.login'))
-
-    # Log form validation errors for POST requests
+        
     elif request.method == 'POST':
         current_app.logger.debug(f"Login form validation failed. Errors: {form.errors}")
 
-    return render_template("users/login.html", title="Login Page", form=form)
+    return render_template("users/login.html", title="Сторінка входу", form=form)
 
 @users_bp.route("/profile", methods=["GET", "POST"])
 def profile():
@@ -139,3 +164,42 @@ def set_theme(theme_name):
 
     flash(f"Тему змінено на {theme_name}.", "info")
     return resp
+
+@users_bp.route("/account")
+def account():
+    """
+    Обробляє запит до сторінки акаунту. 
+    Перевіряє, чи користувач увійшов в систему, і відображає його дані.
+    """
+    
+    if 'user_id' not in session:
+        flash('Для доступу до цієї сторінки необхідно увійти.', 'info')
+        return redirect(url_for('users_bp.login'))
+
+    user_id = session['user_id']
+    user = User.query.get(user_id)
+    
+    if user is None:
+        flash('Помилка авторизації. Спробуйте увійти знову.', 'error')
+        session.pop('user_id', None)
+        session.pop('username', None)
+        return redirect(url_for('users_bp.login'))
+
+    return render_template("users/account.html", title="Мій акаунт", user=user)
+
+@users_bp.route("/users")
+def list_users():
+    """
+    Отримує список усіх користувачів з бази даних та їх кількість.
+    """
+    
+    users = User.query.order_by(User.username).all()
+
+    user_count = len(users)
+
+    return render_template(
+        "users/list_users.html", 
+        title="Список користувачів", 
+        users=users, 
+        user_count=user_count
+    )

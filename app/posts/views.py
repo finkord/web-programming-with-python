@@ -2,8 +2,10 @@ from flask import render_template, abort, redirect, url_for, flash, request, cur
 from . import post_bp
 from .forms import PostForm
 from .. import db
-from .models import User, Post, PostCategory,Tag
+from .models import Post, PostCategory,Tag
 from sqlalchemy import select
+
+from app.users.models import User
 
 # url_prefix="/post"
 

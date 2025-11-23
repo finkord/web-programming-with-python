@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title text-center mb-1">{{ user.username }}</h4>
+                    <p class="card-subtitle text-muted text-center">{{ user.email }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="mb-3">
+                Мої Публікації
+                <span class="badge bg-secondary">{{ user.posts | length }}</span>
+            </h4>
+
+            {% if user.posts %}
+            {% for post in user.posts %}
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body p-3">
+                    <h6 class="card-title mb-1">
+                        <a href="{{ url_for('posts.detail_post', id=post.id) }}" class="text-decoration-none">{{
+                            post.title }}</a>
+                    </h6>
+                    <p class="card-text small text-muted">
+                        {{ post.content | truncate(100) }}
+                    </p>
+                    <footer class="mt-1 text-end">
+                        Опубліковано: <cite title="Дата">{{ post.posted.strftime('%Y-%m-%d') }}</cite>
+                    </footer>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="alert alert-info py-2" role="alert">
+                Ви ще не створили жодної публікації.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

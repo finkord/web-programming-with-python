@@ -13,7 +13,8 @@ from wtforms.validators import (
     Length
 )
 from datetime import datetime
-from .models import PostCategory, User, Tag
+from .models import PostCategory, Tag
+from app.users.models import User
 
 class PostForm(FlaskForm):
     """
