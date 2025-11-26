@@ -1,8 +1,8 @@
 from flask import Blueprint, url_for, redirect, request, render_template, flash, session, make_response, current_app
 from .forms import LoginForm, RegistrationForm
-from .. import bcrypt
 from .. import db
 from .models import User
+from flask_login import login_user, login_required, current_user, logout_user
 
 # Defining a blueprint for user-related routes
 users_bp = Blueprint(
@@ -31,6 +31,9 @@ def admin():
 def register():
     form = RegistrationForm()
     
+    if current_user.is_authenticated:
+        return redirect(url_for('users_bp.account'))
+
     if form.validate_on_submit():
         
         hashed_password = User.hash_password(form.password.data)
@@ -65,6 +68,8 @@ def login():
             
             session['user_id'] = user.id  
             session['username'] = user.username 
+
+            login_user(user, remember=form.remember.data)
             
             current_app.logger.info(f"Successful login for user: {user.username}")
 
@@ -85,6 +90,7 @@ def login():
     return render_template("users/login.html", title="Сторінка входу", form=form)
 
 @users_bp.route("/profile", methods=["GET", "POST"])
+@login_required
 def profile():
     """Displays user profile and handles cookie management (add/delete)."""
     username = session.get("username")
@@ -142,6 +148,7 @@ def profile():
 def logout():
     """Logs out the user by removing 'username' from the session."""
     session.pop("username", None)
+    logout_user()
 
     flash("You have been logged out.", "info")
     return redirect(url_for("users_bp.login"))
@@ -166,6 +173,7 @@ def set_theme(theme_name):
     return resp
 
 @users_bp.route("/account")
+@login_required
 def account():
     """
     Обробляє запит до сторінки акаунту. 
@@ -188,6 +196,7 @@ def account():
     return render_template("users/account.html", title="Мій акаунт", user=user)
 
 @users_bp.route("/users")
+@login_required
 def list_users():
     """
     Отримує список усіх користувачів з бази даних та їх кількість.

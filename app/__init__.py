@@ -16,6 +16,10 @@ load_dotenv()
 
 from flask_bcrypt import Bcrypt
 
+from flask_login import LoginManager
+
+login_manager = LoginManager()
+
 class Base(DeclarativeBase):
     metadata = MetaData(naming_convention={
         "ix": 'ix_%(column_0_label)s',
@@ -39,6 +43,11 @@ def create_app(config_name: str = os.environ.get("FLASK_CONFIG", "dev")) -> Flas
     db.init_app(app)
     migrate.init_app(app, db)
     bcrypt.init_app(app)
+    login_manager.init_app(app)
+
+    login_manager.login_view = 'users_bp.login'
+    login_manager.login_message = 'Please log in to access this page'
+    login_manager.login_message_category = 'warning'
 
     # --- START LOGGING CONFIGURATION ---
     if not os.path.exists('logs'):

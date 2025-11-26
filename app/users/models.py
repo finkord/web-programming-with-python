@@ -8,8 +8,15 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .. import db
 from .. import bcrypt
+from .. import login_manager
 
-class User(db.Model):
+from flask_login import UserMixin
+
+@login_manager.user_loader
+def user_loader(user_id):
+    return User.query.get(int(user_id))
+
+class User(db.Model, UserMixin):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
