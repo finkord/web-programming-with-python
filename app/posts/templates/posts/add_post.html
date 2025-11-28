@@ -1,10 +1,22 @@
 {% extends "base.html" %}
 {% from "macros/postform_macros.html" import render_field %}
 
+{% set is_edit_mode = post is defined and post %}
+
+{% if is_edit_mode %}
+{% set title_text = "Редагування поста" %}
+{% set button_text = "Зберегти зміни" %}
+{% set button_class = "btn-warning" %}
+{% else %}
+{% set title_text = "Створення нового поста" %}
+{% set button_text = "Створити пост" %}
+{% set button_class = "btn-primary" %}
+{% endif %}
+
 {% block content %}
 <div class="row mt-5">
     <div class="col-md-8 offset-md-2">
-        <h1 class="text-center mb-4">Створення нового поста</h1>
+        <h1 class="text-center mb-4">{{ title_text }}</h1>
 
         <div class="card shadow-sm">
             <div class="card-body p-4">
@@ -34,12 +46,25 @@
                     {{ render_field(form.is_active) }}
 
                     <div class="d-grid mt-4">
-                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                        {{ form.submit(class="btn " + button_class + " btn-lg", value=button_text) }}
                     </div>
                 </form>
 
             </div>
         </div>
+
+        <div class="text-center mt-3">
+            {% if is_edit_mode %}
+            <a href="{{ url_for('posts.detail_post', id=post.id) }}" class="btn btn-link text-secondary">
+                Скасувати
+            </a>
+            {% else %}
+            <a href="{{ url_for('posts.get_posts') }}" class="btn btn-link text-secondary">
+                Повернутися до всіх постів
+            </a>
+            {% endif %}
+        </div>
+
     </div>
 </div>
 {% endblock %}
