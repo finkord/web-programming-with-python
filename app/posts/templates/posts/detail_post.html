@@ -1,60 +1,82 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-md-8 offset-md-2">
+<div class="container mt-3 mb-5">
 
-      <div class="card shadow mb-4">
-        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-          <!-- 1. Заголовок -->
-          <h1 class="h3 mb-0">
-            {{ post.title }}
-          </h1>
-          <div>
-            <!-- Вивід тегів поста -->
-            {% if post.tags %}
+  <a href="{{ url_for('posts.get_posts') }}" class="btn btn-info mb-3">
+    &larr; Повернутися до всіх постів
+  </a>
 
-            {% for tag in post.tags %}
-            <span class="badge bg-info text-dark">{{ tag.name }}</span>
-            {% endfor %}
-            {% endif %}
-            <!-- 2. Категорія -->
-            <span class="badge bg-secondary rounded-pill fs-6">
-              {{ post.category.name.capitalize() }}
-            </span>
-          </div>
-        </div>
+  <div class="row g-4">
+
+    <div class="col-lg-4">
+
+      <div class="card shadow-sm" style="position: sticky; top: 2rem;">
+        <img src="{{ url_for('static', filename='images/postdefault.jpg') }}"
+          class="card-img-top img-fluid {{ 'opacity-50' if not post.is_active else '' }}" alt="Зображення публікації">
 
         <div class="card-body">
-          <!-- 3. Основний вміст -->
-          <p class="card-text fs-5" style="white-space: pre-wrap;">{{ post.content }}</p>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <strong>Категорія:</strong>
+              <span class="badge text-bg-primary rounded-pill">
+                {{ post.category.name.capitalize() }}
+              </span>
+            </li>
+            {% if not post.is_active %}
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <strong>Статус:</strong>
+              <span class="badge text-bg-warning rounded-pill">
+                Прихований
+              </span>
+            </li>
+            {% endif %}
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <strong>Автор:</strong>
+              <span>{{ post.user.username }}</span>
+            </li>
+            {% if post.tags %}
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <strong>Теги:</strong>
+              <div>
+                {% for tag in post.tags %}
+                <span class="badge text-bg-danger text-white rounded-pill">
+                  {{ tag.name }}
+                </span>
+                {% endfor %}
+              </div>
+            </li>
+            {% endif %}
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <strong>Опубліковано:</strong>
+              <small class="text-muted text-end">{{ post.posted.strftime('%Y-%m-%d %H:%M') }}</small>
+            </li>
+          </ul>
         </div>
 
-        <div class="card-footer text-muted d-flex justify-content-between align-items-center">
-          <!-- 4. Інформація про автора/дату -->
-          <div>
-            <small class="me-2"><strong>Автор:</strong> {{ post.user.username }}</small>
-            <small><strong>Дата:</strong> {{ post.posted.strftime('%Y-%m-%d %H:%M') }}</small>
-          </div>
-
-          <!-- 5. Кнопки керування (Редагувати/Видалити) -->
-          <div class="btn-group" role="group">
-            <a href="{{ url_for('posts.update', id=post.id) }}" class="btn btn-sm btn-outline-warning">
-              Редагувати
+        <div class="card-footer p-3">
+          <div class="d-grid gap-2">
+            <a href="{{ url_for('posts.update', id=post.id) }}" class="btn btn-warning">
+              Редагувати пост
             </a>
-            <a href="{{ url_for('posts.delete', id=post.id) }}" class="btn btn-sm btn-outline-danger">
-              Видалити
+            <a href="{{ url_for('posts.delete', id=post.id) }}" class="btn btn-danger">
+              Видалити пост
             </a>
           </div>
         </div>
       </div>
-
-      <a href="{{ url_for('posts.get_posts') }}" class="btn btn-outline-secondary">
-        &larr; Повернутися до всіх постів
-      </a>
-
     </div>
+
+    <div class="col-lg-8">
+      <h1 class="display-5 mb-4" style="word-wrap: break-word;">{{ post.title }}</h1>
+
+      <hr class="mb-4">
+
+      <div class="fs-5" style="white-space: pre-wrap; line-height: 1.8;">
+        {{ post.content }}
+      </div>
+    </div>
+
   </div>
 </div>
 {% endblock %}

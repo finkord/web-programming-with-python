@@ -8,7 +8,7 @@
       {% set show_all = request.args.get('show_all') == 'true' %}
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-          <h1 class="mb-0 text-primary">Усі пости 📚</h1>
+          <h1 class="mb-0 ">Усі пости 📚</h1>
 
           {% if show_all %}
           <a href="{{ url_for('posts.get_posts') }}" class="btn btn-link btn-sm p-0">
@@ -28,9 +28,18 @@
 
       <div class="row">
         {% for post in posts %}
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
           <div class="card shadow-sm h-100">
 
+            <div class="position-absolute top-0 end-0 p-2" style="z-index: 10;">
+              <div class="d-flex flex-column align-items-end gap-1">
+                {% if not post.is_active %}
+                <span class="badge text-bg-warning rounded-pill">
+                  Прихований пост
+                </span>
+                {% endif %}
+              </div>
+            </div>
             <img src="{{ url_for('static', filename='images/postdefault.jpg') }}"
               class="card-img-top {{ 'opacity-75' if not post.is_active else '' }}" alt="Зображення поста">
 
@@ -59,11 +68,11 @@
                     {{ post.category.name.capitalize() }}
                   </span>
 
-                  {% if not post.is_active %}
+                  <!-- {% if not post.is_active %}
                   <span class="badge bg-warning text-dark rounded-pill">
                     Прихований пост
                   </span>
-                  {% endif %}
+                  {% endif %} -->
 
                   <div class="text-muted small mt-1">
                     {{ post.posted.strftime('%Y-%m-%d') }}
