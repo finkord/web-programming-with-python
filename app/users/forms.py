@@ -18,6 +18,8 @@ from wtforms.validators import (
 from app.users.models import User
 from flask_login import current_user
 
+import os
+
 class RegistrationForm(FlaskForm):
     username = StringField(
         "Ім'я користувача", # Username
@@ -117,3 +119,13 @@ class UpdateAccountForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('Ця електронна пошта вже використовується.')
+
+    def validate_picture(self, picture):
+            """Перевірка розміру файлу (не більше 5 МБ)"""
+            if picture.data:
+                picture.data.seek(0, os.SEEK_END)
+                file_size = picture.data.tell()
+                picture.data.seek(0)
+                
+                if file_size > 5 * 1024 * 1024: # 5 МБ в байтах
+                    raise ValidationError('Файл занадто великий. Максимальний розмір - 5MB.')

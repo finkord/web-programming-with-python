@@ -178,22 +178,25 @@ def set_theme(theme_name):
 
 def save_picture(form_picture):
     """
-    Зберігає зображення профілю:
-    1. Генерує випадкове ім'я (щоб уникнути колізій).
-    2. Створює шлях до папки static/images.
-    3. Змінює розмір зображення до 128x128 (thumbnail).
-    4. Зберігає файл.
+    Зберігає:
+    1. Оригінал зображення (file_name.ext).
+    2. Мініатюру 128x128 (thumb_file_name.ext).
+    Повертає ім'я файлу оригіналу.
     """
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(current_app.root_path, 'static/images', picture_fn)
-
-    output_size = (128, 128)
-    i = Image.open(form_picture)
-    i.thumbnail(output_size)
     
-    i.save(picture_path)
+    images_folder = os.path.join(current_app.root_path, 'static/images')
+    original_path = os.path.join(images_folder, picture_fn)
+    thumb_path = os.path.join(images_folder, 'thumb_' + picture_fn)
+
+    i = Image.open(form_picture)
+
+    i.save(original_path)
+
+    i.thumbnail((128, 128))
+    i.save(thumb_path)
 
     return picture_fn
 
@@ -235,7 +238,7 @@ def list_users():
     """
     Отримує список усіх користувачів з бази даних та їх кількість.
     """
-    
+
     users = User.query.order_by(User.username).all()
 
     user_count = len(users)

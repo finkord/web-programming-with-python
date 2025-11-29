@@ -9,18 +9,23 @@
             <div class="card shadow-sm rounded-3 border-0">
                 <div class="card-body py-4">
                     <div class="row align-items-center">
-                        {# Ліва колонка: Фото профілю #}
                         <div class="col-md-4 text-center mb-3 mb-md-0">
                             <div class="mb-2">
-                                <img src="{{ url_for('static', filename='images/' + (user.image or 'profile_default.jpg')) }}"
-                                    alt="{{ user.username }}" class="rounded-circle img-thumbnail"
+                                {# --- ЛОГІКА ВИБОРУ ЗОБРАЖЕННЯ --- #}
+                                {% if user.image and 'default' not in user.image %}
+                                {% set image_file = 'images/thumb_' + user.image %}
+                                {% else %}
+                                {% set image_file = 'images/' + (user.image or 'profile_default.jpg') %}
+                                {% endif %}
+
+                                <img src="{{ url_for('static', filename=image_file) }}" alt="{{ user.username }}"
+                                    class="rounded-circle img-thumbnail"
                                     style="width: 150px; height: 150px; object-fit: cover;">
                             </div>
                             <h4 class="mb-1 fw-semibold text-truncate">{{ user.username }}</h4>
                             <p class="text-muted mb-0 text-truncate">{{ user.email }}</p>
                         </div>
 
-                        {# Права колонка: Форма оновлення #}
                         <div class="col-md-8">
                             <h5 class="card-title mb-3">Редагувати профіль</h5>
 
