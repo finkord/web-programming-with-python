@@ -1,5 +1,5 @@
 from flask import Blueprint, url_for, redirect, request, render_template, flash, session, make_response, current_app
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, UpdateAccountForm
 from .. import db
 from .models import User
 from flask_login import login_user, login_required, current_user, logout_user
@@ -172,28 +172,28 @@ def set_theme(theme_name):
     flash(f"Тему змінено на {theme_name}.", "info")
     return resp
 
-@users_bp.route("/account")
+@users_bp.route("/account", methods=["GET","POST"])
 @login_required
 def account():
     """
-    Обробляє запит до сторінки акаунту. 
-    Перевіряє, чи користувач увійшов в систему, і відображає його дані.
+    Обробляє запит до сторінки акаунту та дозволяє оновлювати дані.
     """
-    
-    if 'user_id' not in session:
-        flash('Для доступу до цієї сторінки необхідно увійти.', 'info')
-        return redirect(url_for('users_bp.login'))
+    form = UpdateAccountForm()
 
-    user_id = session['user_id']
-    user = User.query.get(user_id)
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        
+        db.session.commit()
+        flash('Ваш акаунт успішно оновлено!', 'success')
+        return redirect(url_for('users_bp.account'))
     
-    if user is None:
-        flash('Помилка авторизації. Спробуйте увійти знову.', 'error')
-        session.pop('user_id', None)
-        session.pop('username', None)
-        return redirect(url_for('users_bp.login'))
+    elif request.method == 'GET':
+        # Заповнюємо форму поточними даними користувача
+        form.username.data = current_user.username
+        form.email.data = current_user.email
 
-    return render_template("users/account.html", title="Мій акаунт", user=user)
+    return render_template("users/account.html", title="Мій акаунт", user=current_user, form=form)
 
 @users_bp.route("/users")
 @login_required

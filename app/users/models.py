@@ -24,6 +24,12 @@ class User(db.Model, UserMixin):
     password: Mapped[str] = mapped_column(String(255), nullable=False)
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
 
+    image: Mapped[str] = mapped_column(
+        String(60), 
+        nullable=True, 
+        default='profile_default.jpg'
+    )
+
     posts: Mapped[list["Post"]] = relationship(
         back_populates="user", 
         cascade="all, delete-orphan"

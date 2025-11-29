@@ -16,6 +16,8 @@ from wtforms.validators import (
 
 from app.users.models import User
 
+from flask_login import current_user
+
 class RegistrationForm(FlaskForm):
     username = StringField(
         "Ім'я користувача", # Username
@@ -82,3 +84,31 @@ class LoginForm(FlaskForm):
     remember = BooleanField("Запам'ятати мене")
 
     submit = SubmitField("Увійти")
+
+class UpdateAccountForm(FlaskForm):
+    """Форма оновлення даних користувача"""
+    username = StringField(
+        "Ім'я користувача",
+        validators=[DataRequired(), Length(min=4, max=14)]
+    )
+    
+    email = EmailField(
+        "Електронна пошта",
+        validators=[DataRequired(), Email(), Length(max=120)]
+    )
+    
+    submit = SubmitField("Оновити")
+
+    def validate_username(self, username):
+        """Перевірка унікальності імені (ігноруючи поточне ім'я користувача)"""
+        if username.data != current_user.username:
+            user = User.query.filter_by(username=username.data).first()
+            if user:
+                raise ValidationError('Це ім\'я користувача вже зайняте.')
+
+    def validate_email(self, email):
+        """Перевірка унікальності пошти (ігноруючи поточну пошту користувача)"""
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError('Ця електронна пошта вже використовується.')
