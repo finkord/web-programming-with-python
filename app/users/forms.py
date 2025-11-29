@@ -7,6 +7,7 @@ from wtforms import (
     BooleanField,  
     SubmitField,
     ValidationError,
+    TextAreaField
 )
 from wtforms.validators import (
     DataRequired,
@@ -102,6 +103,11 @@ class UpdateAccountForm(FlaskForm):
     picture = FileField(
         'Оновити фото профілю', 
         validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Тільки зображення!')]
+    )
+
+    about_me = TextAreaField(
+        "Про мене", 
+        validators=[Length(min=0, max=140)]
     )
     
     submit = SubmitField("Оновити")

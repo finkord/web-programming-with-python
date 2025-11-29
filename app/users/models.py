@@ -1,10 +1,11 @@
 # app/users/models.py
-
+from datetime import datetime
 from sqlalchemy import (
-    String
+    String, DateTime
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from typing import Optional
 
 from .. import db
 from .. import bcrypt
@@ -29,6 +30,9 @@ class User(db.Model, UserMixin):
         nullable=True, 
         default='profile_default.jpg'
     )
+
+    about_me: Mapped[Optional[str]] = mapped_column(String(140))
+    last_seen: Mapped[Optional[datetime]] = mapped_column(default=datetime.utcnow)
 
     posts: Mapped[list["Post"]] = relationship(
         back_populates="user", 

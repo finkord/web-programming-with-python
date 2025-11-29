@@ -8,6 +8,8 @@ import os
 import secrets
 from PIL import Image
 
+from datetime import datetime
+
 # Defining a blueprint for user-related routes
 users_bp = Blueprint(
     'users_bp', __name__,
@@ -200,34 +202,43 @@ def save_picture(form_picture):
 
     return picture_fn
 
+@users_bp.before_app_request
+def before_request():
+    """Оновлює час останнього відвідування для залогіненого користувача."""
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        # Тут ми не робимо повноцінний db.session.commit() для кожного запиту, 
+        # бо це може навантажувати БД, але в межах навчального проекту це допустимо.
+        # SQLAlchemy відстежує зміни в об'єкті current_user.
+        db.session.commit()
+        
 @users_bp.route("/account", methods=["GET","POST"])
 @login_required
 def account():
     """
-    Обробляє запит до сторінки акаунту та дозволяє оновлювати дані i фото.
+    Обробляє запит до сторінки акаунту та дозволяє оновлювати дані.
     """
     form = UpdateAccountForm()
 
     if form.validate_on_submit():
-        # Логіка оновлення картинки
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
-            # Оновлюємо поле image поточного користувача
             current_user.image = picture_file
 
         current_user.username = form.username.data
         current_user.email = form.email.data
+
+        current_user.about_me = form.about_me.data
         
         db.session.commit()
         flash('Ваш акаунт успішно оновлено!', 'success')
         return redirect(url_for('users_bp.account'))
     
     elif request.method == 'GET':
-        # Заповнюємо форму поточними даними користувача
         form.username.data = current_user.username
         form.email.data = current_user.email
+        form.about_me.data = current_user.about_me
 
-    # Отримуємо ім'я файлу зображення (якщо немає - дефолтне)
     image_file = url_for('static', filename='images/' + (current_user.image or 'profile_default.jpg'))
 
     return render_template("users/account.html", title="Мій акаунт", user=current_user, form=form, image_file=image_file)

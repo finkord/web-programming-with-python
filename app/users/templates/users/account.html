@@ -24,6 +24,9 @@
                             </div>
                             <h4 class="mb-1 fw-semibold text-truncate">{{ user.username }}</h4>
                             <p class="text-muted mb-0 text-truncate">{{ user.email }}</p>
+                            <p class="text-muted mb-0 text-truncate">
+                                {{ user.last_seen.strftime("%d %b %Y, %H:%M") }}
+                            </p>
                         </div>
 
                         <div class="col-md-8">
@@ -38,6 +41,10 @@
 
                                 <div class="mb-2">
                                     {{ render_field(form.email, placeholder="Введіть нову пошту") }}
+                                </div>
+
+                                <div class="mb-2">
+                                    {{ render_field(form.about_me, placeholder="Розкажіть трохи про себе...") }}
                                 </div>
 
                                 <div class="mb-3">
