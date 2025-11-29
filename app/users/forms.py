@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import (
     EmailField,
     StringField,
@@ -15,7 +16,6 @@ from wtforms.validators import (
 )
 
 from app.users.models import User
-
 from flask_login import current_user
 
 class RegistrationForm(FlaskForm):
@@ -95,6 +95,11 @@ class UpdateAccountForm(FlaskForm):
     email = EmailField(
         "Електронна пошта",
         validators=[DataRequired(), Email(), Length(max=120)]
+    )
+
+    picture = FileField(
+        'Оновити фото профілю', 
+        validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Тільки зображення!')]
     )
     
     submit = SubmitField("Оновити")

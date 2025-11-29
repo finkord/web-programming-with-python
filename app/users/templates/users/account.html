@@ -23,7 +23,8 @@
                         {# Права колонка: Форма оновлення #}
                         <div class="col-md-8">
                             <h5 class="card-title mb-3">Редагувати профіль</h5>
-                            <form method="POST" action="" novalidate>
+
+                            <form method="POST" action="" enctype="multipart/form-data" novalidate>
                                 {{ form.hidden_tag() }}
 
                                 <div class="mb-2">
@@ -32,6 +33,10 @@
 
                                 <div class="mb-2">
                                     {{ render_field(form.email, placeholder="Введіть нову пошту") }}
+                                </div>
+
+                                <div class="mb-3">
+                                    {{ render_field(form.picture) }}
                                 </div>
 
                                 <div class="text-end">

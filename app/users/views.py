@@ -4,6 +4,10 @@ from .. import db
 from .models import User
 from flask_login import login_user, login_required, current_user, logout_user
 
+import os
+import secrets
+from PIL import Image
+
 # Defining a blueprint for user-related routes
 users_bp = Blueprint(
     'users_bp', __name__,
@@ -172,15 +176,42 @@ def set_theme(theme_name):
     flash(f"Тему змінено на {theme_name}.", "info")
     return resp
 
+def save_picture(form_picture):
+    """
+    Зберігає зображення профілю:
+    1. Генерує випадкове ім'я (щоб уникнути колізій).
+    2. Створює шлях до папки static/images.
+    3. Змінює розмір зображення до 128x128 (thumbnail).
+    4. Зберігає файл.
+    """
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(current_app.root_path, 'static/images', picture_fn)
+
+    output_size = (128, 128)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    
+    i.save(picture_path)
+
+    return picture_fn
+
 @users_bp.route("/account", methods=["GET","POST"])
 @login_required
 def account():
     """
-    Обробляє запит до сторінки акаунту та дозволяє оновлювати дані.
+    Обробляє запит до сторінки акаунту та дозволяє оновлювати дані i фото.
     """
     form = UpdateAccountForm()
 
     if form.validate_on_submit():
+        # Логіка оновлення картинки
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            # Оновлюємо поле image поточного користувача
+            current_user.image = picture_file
+
         current_user.username = form.username.data
         current_user.email = form.email.data
         
@@ -193,7 +224,10 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
 
-    return render_template("users/account.html", title="Мій акаунт", user=current_user, form=form)
+    # Отримуємо ім'я файлу зображення (якщо немає - дефолтне)
+    image_file = url_for('static', filename='images/' + (current_user.image or 'profile_default.jpg'))
+
+    return render_template("users/account.html", title="Мій акаунт", user=current_user, form=form, image_file=image_file)
 
 @users_bp.route("/users")
 @login_required
