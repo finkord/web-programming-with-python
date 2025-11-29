@@ -135,3 +135,25 @@ class UpdateAccountForm(FlaskForm):
                 
                 if file_size > 5 * 1024 * 1024: # 5 МБ в байтах
                     raise ValidationError('Файл занадто великий. Максимальний розмір - 5MB.')
+
+class ChangePasswordForm(FlaskForm):
+    """Форма для зміни пароля користувача"""
+    old_password = PasswordField(
+        "Поточний пароль", 
+        validators=[DataRequired()]
+    )
+    
+    new_password = PasswordField(
+        "Новий пароль", 
+        validators=[DataRequired(), Length(min=6)]
+    )
+    
+    confirm_password = PasswordField(
+        "Підтвердження нового паролю", 
+        validators=[
+            DataRequired(), 
+            EqualTo('new_password', message="Паролі мають співпадати")
+        ]
+    )
+    
+    submit_pass = SubmitField("Змінити пароль")

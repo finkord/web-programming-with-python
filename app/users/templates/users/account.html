@@ -62,6 +62,38 @@
         </div>
     </div>
 
+    <div class="row mb-4 justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card shadow-sm rounded-3 border-0">
+                <div class="card-header bg-transparent border-0 pt-4 pb-0">
+                    <h5 class="card-title mb-0">Зміна паролю</h5>
+                </div>
+                <div class="card-body py-4">
+                    <form method="POST" action="" novalidate>
+                        {{ pwd_form.hidden_tag() }}
+
+                        <div class="mb-3">
+                            {{ render_field(pwd_form.old_password, placeholder="Введіть поточний пароль") }}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ render_field(pwd_form.new_password, placeholder="Новий пароль") }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ render_field(pwd_form.confirm_password, placeholder="Підтвердіть новий пароль") }}
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            {{ pwd_form.submit_pass(class="btn btn-danger") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row justify-content-center">
         <div class="col-md-10 col-lg-8">
             <div class="d-flex justify-content-between align-items-center mb-3">
