@@ -1,5 +1,16 @@
 #
 
+## Lab 10
+
+![flask](screenshots/vol1.png)
+*Main account with custom picture*
+![flask](screenshots/pass_change.png)
+*Password change form*
+![flask](screenshots/vol2.png)
+*Second account with default picture*
+
+## lab 9
+
 ![flask](screenshots/reg.png)
 *Register*
 ![flask](screenshots/log.png)
