@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Мої Друзі</h1>
+        <div>
+            <a href="{{ url_for('friends.create_friend') }}" class="btn btn-primary">
+                <i class="bi bi-person-plus-fill"></i> Додати друга
+            </a>
+            <a href="{{ url_for('friends.create_group') }}" class="btn btn-outline-success">
+                <i class="bi bi-folder-plus"></i> Створити групу
+            </a>
+        </div>
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <form method="GET" action="{{ url_for('friends.list_friends') }}" class="d-flex gap-2">
+                {{ search_form.query(class="form-control", placeholder="Пошук за прізвищем...") }}
+                {{ search_form.submit(class="btn btn-outline-secondary") }}
+                <a href="{{ url_for('friends.list_friends') }}" class="btn btn-outline-danger">Скинути</a>
+            </form>
+        </div>
+    </div>
+
+    {% if friends %}
+    <div class="row">
+        {% for friend in friends %}
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">{{ friend.first_name }} {{ friend.last_name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        <span class="badge bg-info">{{ friend.group.name }}</span>
+                    </h6>
+                    <p class="card-text">
+                        {% if friend.phone %}<i class="bi bi-telephone"></i> {{ friend.phone }}<br>{% endif %}
+                        {% if friend.email %}<i class="bi bi-envelope"></i> {{ friend.email }}{% endif %}
+                    </p>
+                    <a href="{{ url_for('friends.detail_friend', id=friend.id) }}"
+                        class="btn btn-sm btn-outline-primary stretched-link">Деталі</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">Список друзів порожній або нікого не знайдено.</div>
+    {% endif %}
+</div>
+{% endblock %}

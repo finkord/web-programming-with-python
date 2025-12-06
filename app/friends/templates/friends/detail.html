@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <a href="{{ url_for('friends.list_friends') }}" class="btn btn-link mb-3">&larr; Назад до списку</a>
+
+    <div class="card shadow-lg">
+        <div class="card-body text-center p-5">
+            <h1 class="display-4">{{ friend.first_name }} {{ friend.last_name }}</h1>
+            <span class="badge bg-primary fs-5 mb-4">{{ friend.group.name }}</span>
+
+            <hr>
+
+            <div class="row justify-content-center text-start">
+                <div class="col-md-6">
+                    <p class="fs-5"><strong>Телефон:</strong> {{ friend.phone or 'Не вказано' }}</p>
+                    <p class="fs-5"><strong>Email:</strong> {{ friend.email or 'Не вказано' }}</p>
+                </div>
+            </div>
+
+            <div class="mt-5 d-flex justify-content-center gap-3">
+                <a href="{{ url_for('friends.update_friend', id=friend.id) }}" class="btn btn-warning">
+                    <i class="bi bi-pencil"></i> Редагувати
+                </a>
+
+                <form action="{{ url_for('friends.delete_friend', id=friend.id) }}" method="POST"
+                    onsubmit="return confirm('Ви впевнені?');">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Видалити
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -42,6 +42,10 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('users_bp.list_users')}}">All Users</a>
         </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('friends.list_friends')}}">List Friends</a>
+        </li>
         {% else %}
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('users_bp.login')}}">Login</a>
@@ -51,10 +55,6 @@
           <a class="nav-link" href="{{ url_for('users_bp.register')}}">Register</a>
         </li>
         {% endif %}
-
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('friends.friends')}}">Friends</a>
-        </li>
       </ul>
     </div>
   </div>

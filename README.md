@@ -1,27 +1,16 @@
 #
 
-## Lab 10
+## Self-study Assignment
 
-![flask](screenshots/vol1.png)
-*Main account with custom picture*
-![flask](screenshots/pass_change.png)
-*Password change form*
-![flask](screenshots/vol2.png)
-*Second account with default picture*
+### Варіант №17 - Друзі
 
-## lab 9
-
-![flask](screenshots/reg.png)
-*Register*
-![flask](screenshots/log.png)
-*Login*
-![flask](screenshots/prof.png)
-*Profile*
-![flask](screenshots/acc.png)
-*Account
-![flask](screenshots/list.png)
-*List*
-![flask](screenshots/sql.png)
-*User Table*
-![flask](screenshots/tests.png)
-*Auth Tests*
+![flask](screenshots/list-1.png)
+![flask](screenshots/list_search-2.png)
+![flask](screenshots/create_vika-3.png)
+![flask](screenshots/flash_vika-4.png)
+![flask](screenshots/create_job_group-5.png)
+![flask](screenshots/create_rostislav-6.png)
+![flask](screenshots/flash_rostislav-7.png)
+![flask](screenshots/detail-8.png)
+![flask](screenshots/are_you_sure-9.png)
+![flask](screenshots/flash_delete-10.png)

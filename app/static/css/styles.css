@@ -110,10 +110,9 @@ main {
   color: #a0a0a0;
 }
 
-.btn-primary {
+/* .btn-primary {
   background-color: #bb86fc;
   border-color: #bb86fc;
-  /* border-radius: 20px;  */
   padding: 10px 24px;
   font-weight: 500;
   transition: background-color 0.3s ease;
@@ -123,7 +122,7 @@ main {
 .btn-primary:focus {
   background-color: #a764fa;
   border-color: #a764fa;
-}
+} */
 
 .contact-links a {
   font-size: 1.5rem;
@@ -359,8 +358,7 @@ section {
   color: #495057; /* Темний текст */
 }
 
-[data-bs-theme="light"] .btn-primary {
-  /* Використовуємо стандартний синій Bootstrap */
+/* [data-bs-theme="light"] .btn-primary {
   background-color: #0d6efd;
   border-color: #0d6efd;
 }
@@ -368,7 +366,7 @@ section {
 [data-bs-theme="light"] .btn-primary:focus {
   background-color: #0b5ed7;
   border-color: #0a58ca;
-}
+} */
 
 [data-bs-theme="light"] .contact-links a {
   color: #495057; /* Темний текст */
