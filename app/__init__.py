@@ -98,6 +98,12 @@ def create_app(config_name: str = os.environ.get("FLASK_CONFIG", "dev")) -> Flas
 
         from .products import models
 
+        # Import and register the 'friends' Blueprint
+        from .friends import friends_bp as friends_blueprint
+        app.register_blueprint(friends_blueprint)
+
+        from .posts import models
+
         # Print routes only when testing
         if config_name == "test":
             print("Registered routes:")
