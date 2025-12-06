@@ -1,36 +1,16 @@
-# 📚 flask-course-2025
+#
 
-Learning course on web development with Flask.
+## Self-study Assignment
 
-Each lesson is located in a separate GitHub branch.
+### Варіант №17 - Друзі
 
-## 🚀 How to Use
-
-Follow these steps to get started with the course:
-
-1. **Clone the repository**:
-    ```bash
-    git clone https://github.com/svkivn/flask-course-2025
-    cd flask-course-2025
-    ```
-
-2. **View available branches**:
-    ```bash
-    git branch -r
-    ```
-
-3. **Switch to the lesson branch you want**:
-    ```bash
-    git checkout lesson1-hello-world
-    ```
-4. **Create and activate a virtual environment**:
-    ```bash
-    python -m venv venv
-    source venv/bin/activate   # Linux/Mac
-    venv\Scripts\activate      # Windows
-    ```
-
-5. **Install dependencies**:
-    ```bash
-    pip install -r requirements.txt
-    ```
+![flask](screenshots/list-1.png)
+![flask](screenshots/list_search-2.png)
+![flask](screenshots/create_vika-3.png)
+![flask](screenshots/flash_vika-4.png)
+![flask](screenshots/create_job_group-5.png)
+![flask](screenshots/create_rostislav-6.png)
+![flask](screenshots/flash_rostislav-7.png)
+![flask](screenshots/detail-8.png)
+![flask](screenshots/are_you_sure-9.png)
+![flask](screenshots/flash_delete-10.png)

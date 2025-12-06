@@ -1,0 +1,61 @@
+<!-- Навігація -->
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="{{ url_for('main.resume') }}">Володимир Фуфалько</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main.resume') }}#about">Про мене</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main.resume') }}#experience">Досвід</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main.resume') }}#skills">Навички</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main.resume') }}#education">Освіта</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main.contacts') }}">Контакти</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('users_bp.admin')}}">Admin</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('posts.get_posts')}}">Posts</a>
+        </li>
+
+        {% if current_user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('users_bp.profile')}}">Profile</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('users_bp.account')}}">Account</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('users_bp.list_users')}}">All Users</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('friends.list_friends')}}">List Friends</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('users_bp.login')}}">Login</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('users_bp.register')}}">Register</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% from "macros/_macros.html" import render_field %}
+
+{% block content %}
+<div class="row mt-5">
+  <div class="col-md-6 offset-md-3">
+    <h1 class="text-center mb-4">Login</h1>
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+
+        <form method="POST" novalidate>
+          {{ form.hidden_tag() }}
+          <!-- {{form.csrf_token}} -->
+
+          <div class="mb-3">
+            {{ render_field(form.username, placeholder="Ім'я користувача") }}
+          </div>
+
+          <div class="mb-3">
+            {{ render_field(form.password, placeholder="Пароль") }}
+          </div>
+
+          <div class="form-check mb-3">
+            {{ form.remember(class="form-check-input") }}
+            {{ form.remember.label(class="form-check-label") }}
+          </div>
+
+          <div class="d-grid">
+            {{ form.submit(class="btn btn-info text-white") }}
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

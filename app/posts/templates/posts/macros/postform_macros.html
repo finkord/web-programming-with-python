@@ -1,0 +1,61 @@
+{% macro render_field(field, label_class="", input_class="", placeholder="", rows=None) %}
+
+{# --- ЛОГІКА ДЛЯ ЧЕКБОКСІВ (BooleanField) --- #}
+{% if field.type == 'BooleanField' %}
+<div class="form-check mb-3">
+
+  {% set default_input_class = 'form-check-input' %}
+  {% if input_class %}
+  {% set default_input_class = input_class %}
+  {% endif %}
+  {% if field.errors %}
+  {% set default_input_class = default_input_class + ' is-invalid' %}
+  {% endif %}
+
+  {# Прибрано **kwargs #}
+  {{ field(class=default_input_class) }}
+
+  {{ field.label(class="form-check-label " + label_class) }}
+
+  {% if field.errors %}
+  <div class="invalid-feedback">
+    {% for error in field.errors %}
+    <span>{{ error }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+
+{# --- ЛОГІКА ДЛЯ ВСІХ ІНШИХ ПОЛІВ --- #}
+{% else %}
+<div class="mb-3">
+  {{ field.label(class="form-label " + label_class) }}
+
+  {% set default_input_class = 'form-control' %}
+  {% if input_class %}
+  {% set default_input_class = input_class %}
+  {% endif %}
+  {% if field.errors %}
+  {% set default_input_class = default_input_class + ' is-invalid' %}
+  {% endif %}
+
+  {#
+  Обережно обробляємо 'rows'.
+  Прибрано **kwargs
+  #}
+  {% if rows %}
+  {{ field(class=default_input_class, placeholder=placeholder, rows=rows) }}
+  {% else %}
+  {{ field(class=default_input_class, placeholder=placeholder) }}
+  {% endif %}
+
+  {% if field.errors %}
+  <div class="invalid-feedback">
+    {% for error in field.errors %}
+    <span>{{ error }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endif %}
+{% endmacro %}

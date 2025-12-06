@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% from "macros/_macros.html" import render_field %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="row mb-4 justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card shadow-sm rounded-3 border-0">
+                <div class="card-body py-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-4 text-center mb-3 mb-md-0">
+                            <div class="mb-2">
+                                {# --- ЛОГІКА ВИБОРУ ЗОБРАЖЕННЯ --- #}
+                                {% if user.image and 'default' not in user.image %}
+                                {% set image_file = 'images/thumb_' + user.image %}
+                                {% else %}
+                                {% set image_file = 'images/' + (user.image or 'profile_default.jpg') %}
+                                {% endif %}
+
+                                <img src="{{ url_for('static', filename=image_file) }}" alt="{{ user.username }}"
+                                    class="rounded-circle img-thumbnail"
+                                    style="width: 150px; height: 150px; object-fit: cover;">
+                            </div>
+                            <h4 class="mb-1 fw-semibold text-truncate">{{ user.username }}</h4>
+                            <p class="text-muted mb-0 text-truncate">{{ user.email }}</p>
+                            <p class="text-muted mb-0 text-truncate">
+                                {{ user.last_seen.strftime("%d %b %Y, %H:%M") }}
+                            </p>
+                        </div>
+
+                        <div class="col-md-8">
+                            <h5 class="card-title mb-3">Редагувати профіль</h5>
+
+                            <form method="POST" action="" enctype="multipart/form-data" novalidate>
+                                {{ form.hidden_tag() }}
+
+                                <div class="mb-2">
+                                    {{ render_field(form.username, placeholder="Введіть нове ім'я") }}
+                                </div>
+
+                                <div class="mb-2">
+                                    {{ render_field(form.email, placeholder="Введіть нову пошту") }}
+                                </div>
+
+                                <div class="mb-2">
+                                    {{ render_field(form.about_me, placeholder="Розкажіть трохи про себе...") }}
+                                </div>
+
+                                <div class="mb-3">
+                                    {{ render_field(form.picture) }}
+                                </div>
+
+                                <div class="text-end">
+                                    {{ form.submit(class="btn btn-primary") }}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4 justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card shadow-sm rounded-3 border-0">
+                <div class="card-header bg-transparent border-0 pt-4 pb-0">
+                    <h5 class="card-title mb-0">Зміна паролю</h5>
+                </div>
+                <div class="card-body py-4">
+                    <form method="POST" action="" novalidate>
+                        {{ pwd_form.hidden_tag() }}
+
+                        <div class="mb-3">
+                            {{ render_field(pwd_form.old_password, placeholder="Введіть поточний пароль") }}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ render_field(pwd_form.new_password, placeholder="Новий пароль") }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ render_field(pwd_form.confirm_password, placeholder="Підтвердіть новий пароль") }}
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            {{ pwd_form.submit_pass(class="btn btn-danger") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-semibold">
+                    Мої Публікації
+                </h4>
+                <span class="badge bg-primary px-3 py-2 fs-6">
+                    {{ user.posts | length }}
+                </span>
+            </div>
+
+            {% if user.posts %}
+            {% for post in user.posts %}
+            <div class="card mb-4 shadow-sm border-0 rounded-4">
+                <div class="card-body p-4">
+
+                    <h5 class="card-title mb-2">
+                        <a href="{{ url_for('posts.detail_post', id=post.id) }}"
+                            class="text-decoration-none fw-semibold text-dark">
+                            {{ post.title }}
+                        </a>
+                    </h5>
+
+                    <p class="card-text text-muted small">
+                        {{ post.content | truncate(150) }}
+                    </p>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            Опубліковано: <span class="fw-semibold">{{ post.posted.strftime('%Y-%m-%d') }}</span>
+                        </small>
+
+                        <a href="{{ url_for('posts.detail_post', id=post.id) }}"
+                            class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                            Читати
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="alert alert-info text-center py-3 rounded-3 shadow-sm" role="alert">
+                Ви ще не створили жодної публікації.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

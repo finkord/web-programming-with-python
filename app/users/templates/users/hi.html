@@ -1,0 +1,26 @@
+{% extends "base.html" %} {% block title %} Greating Page {% endblock %} {%block
+content %}
+
+<br />
+<nav>
+  <ul class="navbar-nav ms-auto">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        href="{{ url_for('users_bp.greetings', name='John', age=30)}}"
+        >Greet John</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('users_bp.admin')}}">Admin</a>
+    </li>
+  </ul>
+</nav>
+<br />
+
+<h2>Hello, {{name}}!</h2>
+{%if age%}
+<p>You are {{age}} years old.</p>
+{%else%}
+<p>Age is unknown</p>
+{%endif%} {% endblock %}
